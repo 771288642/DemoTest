@@ -27,6 +27,9 @@
                            baseURL:@"arkpaastest.analysys.cn"
                        autoProfile:YES];
     
+//    [AnalysysAgent setUploadURL:@"https://arkpaastest.analysys.cn:4089"];
+//    [AnalysysAgent setVisitorDebugURL:@"wss://arkpaastest.analysys.cn:4091"];
+//    [AnalysysAgent setVisitorConfigURL:@"https://arkpaastest.analysys.cn:4089"];
     
     return YES;
 }

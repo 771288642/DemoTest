@@ -28,7 +28,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width - 20, self.view.frame.size.height - 64)];
+    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + 40, self.view.frame.size.width - 20, self.view.frame.size.height - 64)];
     [self.view addSubview:self.demoView];
     [self.demoView.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.demoView.sendDataButton addTarget:self action:@selector(sendDataButtonAction) forControlEvents:UIControlEventTouchUpInside];
