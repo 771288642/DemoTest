@@ -7,15 +7,33 @@
 //
 
 #import "ViewController.h"
-#import "DropDownButton.h"
-#import "DropDownList.h"
 #import "DemoView.h"
 #import <AnalysysAgent/AnalysysAgent.h>
+#import "UIView+Addition.h"
+#import "ListView.h"
 
-@interface ViewController ()
+#define isPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
-@property (nonatomic, strong) DropDownButton *button1, *button2, *button3;
-@property (nonatomic, strong) DropDownList *imageListView1, *imageListView2, *imageListView3;
+static NSString *const SETTING_KEY = @"settingKey";  //  获取本地数据的key
+
+static NSString *const APP_KEY = @"appKey";  //  appkey
+
+static NSString *const UP_PROTOCOL = @"upProtocol";  //  up协议
+static NSString *const UP_ADDRESS = @"upAddress";  //  up地址
+static NSString *const UP_PORT = @"upPort";  //  up端口
+
+static NSString *const WS_PROTOCOL = @"wsProtocol";  //  ws协议
+static NSString *const WS_ADDRESS = @"wsAddress";  //  ws地址
+static NSString *const WS_PORT = @"wsPort";  //  ws端口
+
+static NSString *const CONFIG_PROTOCOL = @"configProtocol";  //  config协议
+static NSString *const CONFIG_ADDRESS = @"configAddress";  //  config地址
+static NSString *const CONFIG_PORT = @"configPort";  //  config端口
+
+
+@interface ViewController ()<DemoViewProtocol>
+
+//  承载视图
 @property (nonatomic, strong) DemoView *demoView;
 
 @end
@@ -26,75 +44,35 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //注册通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"uploadingMsgNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"uploadMsgSuccessNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"uploadMsgFailedsNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"reUploadMsgNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"NoNetWorkNotification" object:nil];
     
-    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width - 20, self.view.frame.size.height - 64)];
+    
+    
+//    self.view.backgroundColor = [UIColor greenColor];
+    
+    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    CGFloat topViewHeight = navigationBar.height + statusBarFrame.size.height;
+    CGFloat margin = 5;
+    
+    //  初始化底层视图
+    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
+    self.demoView.delegate = self;
+//    self.demoView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.demoView];
-    [self.demoView.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.demoView.sendDataButton addTarget:self action:@selector(sendDataButtonAction) forControlEvents:UIControlEventTouchUpInside];
     
-    //第二行
-    self.button1 = [[DropDownButton alloc] initWithFrame:CGRectMake(self.demoView.uploadLabel.frame.size.width + 5, self.demoView.uploadLabel.frame.origin.y, 80, 30) Title:@"http://" List:@[@"http://", @"https://"]];
-    if ([[defaults valueForKey:@"button1"] length] > 0) {
-        self.button1 = [[DropDownButton alloc] initWithFrame:CGRectMake(self.demoView.uploadLabel.frame.size.width + 5, self.demoView.uploadLabel.frame.origin.y, 80, 30) Title:[defaults valueForKey:@"button1"] List:@[@"http://", @"https://"]];
+    if (isPhoneX) {
+        self.demoView.height -= 34;
     }
-    [self.button1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.demoView addSubview:self.button1];
     
-    self.imageListView1 = [[DropDownList alloc] initWithFrame:CGRectMake(self.demoView.frame.size.width - 32, self.button1.frame.origin.y, 32, 30)];
-//    self.imageListView1.backgroundColor = [UIColor redColor];
-    self.imageListView1.textField = self.demoView.noText1;
-    [self.demoView addSubview:self.imageListView1];
-    
-    //第三行
-    self.button2 = [[DropDownButton alloc] initWithFrame:CGRectMake(self.demoView.socketLabel.frame.size.width + 5, self.demoView.socketLabel.frame.origin.y, 80, 30) Title:@"ws://" List:@[@"ws://", @"wss://"]];
-    if ([[defaults valueForKey:@"button2"] length] > 0) {
-        self.button2 = [[DropDownButton alloc] initWithFrame:CGRectMake(self.demoView.socketLabel.frame.size.width + 5, self.demoView.socketLabel.frame.origin.y, 80, 30) Title:[defaults valueForKey:@"button2"] List:@[@"ws://", @"wss://"]];
-    }
-    [self.button2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.demoView addSubview:self.button2];
-    
-    self.imageListView2 = [[DropDownList alloc] initWithFrame:CGRectMake(self.demoView.frame.size.width - 32, self.button2.frame.origin.y, 32, 30)];
-    self.imageListView2.textField = self.demoView.noText2;
-    [self.demoView addSubview:self.imageListView2];
-    
-    //第四行
-    self.button3 = [[DropDownButton alloc] initWithFrame:CGRectMake(self.demoView.configLabel.frame.size.width + 5, self.demoView.configLabel.frame.origin.y, 80, 30) Title:@"http://" List:@[@"http://", @"https://"]];
-    if ([[defaults valueForKey:@"button3"] length] > 0) {
-        self.button3 = [[DropDownButton alloc] initWithFrame:CGRectMake(self.demoView.configLabel.frame.size.width + 5, self.demoView.configLabel.frame.origin.y, 80, 30) Title:[defaults valueForKey:@"button3"] List:@[@"http://", @"https://"]];
-    }
-    [self.button3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.demoView addSubview:self.button3];
-
-    self.imageListView3 = [[DropDownList alloc] initWithFrame:CGRectMake(self.demoView.frame.size.width - 32, self.button3.frame.origin.y, 32, 30)];
-    self.imageListView3.textField = self.demoView.noText3;
-    [self.demoView addSubview:self.imageListView3];
-    
-    //数据存储
-    self.demoView.appKeyText.text = [defaults valueForKey:@"appKeyText"];
-    self.demoView.uploadText.text = [defaults valueForKey:@"uploadText"];
-    self.demoView.noText1.text = [defaults valueForKey:@"noText1"];
-    self.demoView.socketText.text = [defaults valueForKey:@"socketText"];
-    self.demoView.noText2.text = [defaults valueForKey:@"noText2"];
-    self.demoView.configText.text = [defaults valueForKey:@"configText"];
-    self.demoView.noText3.text = [defaults valueForKey:@"noText3"];
-    self.demoView.uploadAddressText.text = [defaults valueForKey:@"uploadAddressText"];
-    self.demoView.socketAddressText.text = [defaults valueForKey:@"socketAddressText"];
-    self.demoView.configAddressText.text = [defaults valueForKey:@"configAddressText"];
-    
-    
-    
-    UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickAction)];
-    //点击几次后触发事件响应，默认为：1
-    click.numberOfTapsRequired = 3;
-    //需要几个手指点击时触发事件，默认：1
-    click.numberOfTouchesRequired = 1;
-    [self.demoView addGestureRecognizer:click];
+    [self loadLocalDataupdateUI];
 }
 
-- (void)clickAction {
-//    self.demoView.socketLabel.frame.size.height = 0;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -105,91 +83,175 @@
     [super viewWillAppear:animated];
 }
 
-#pragma mark - 保存设置
 
+-(void)dealloc {
+    //  移除通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark *** UI ***
+
+/**
+ 读取本地数据更新UI
+ */
+- (void)loadLocalDataupdateUI {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
+    
+    //  本地是否存有数据
+    if (configInfo) {
+        self.demoView.appKeyText.text = configInfo[APP_KEY];
+        
+        [self.demoView.uploadBtn setTitle:configInfo[UP_PROTOCOL] ?: @"http://" forState:UIControlStateNormal] ;
+        self.demoView.uploadAddressTF.text = configInfo[UP_ADDRESS];
+        self.demoView.uploadPortTF.text = configInfo[UP_PORT];
+        
+        [self.demoView.socketBtn setTitle:configInfo[WS_PROTOCOL] ?: @"ws://" forState:UIControlStateNormal];
+        self.demoView.socketAddressTF.text = configInfo[WS_ADDRESS];
+        self.demoView.socketPortTF.text = configInfo[WS_PORT];
+        
+        [self.demoView.configBtn setTitle:configInfo[CONFIG_PROTOCOL] ?: @"http://" forState:UIControlStateNormal];
+        self.demoView.configAddressTF.text = configInfo[CONFIG_ADDRESS];
+        self.demoView.configPortTF.text = configInfo[CONFIG_PORT];
+        
+        
+        //  修改SDK地址信息
+        [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
+        [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
+        [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
+        
+    } else {
+        //  使用默认配置信息
+        self.demoView.appKeyText.text = @"paastest";
+        
+        [self.demoView.uploadBtn setTitle:@"https://" forState:UIControlStateNormal] ;
+        self.demoView.uploadAddressTF.text = @"arkpaastest.analysys.cn";
+        self.demoView.uploadPortTF.text = @"4089";
+        
+        [self.demoView.socketBtn setTitle:@"wss://" forState:UIControlStateNormal];
+        self.demoView.socketAddressTF.text = @"arkpaastest.analysys.cn";
+        self.demoView.socketPortTF.text = @"4091";
+        
+        [self.demoView.configBtn setTitle:@"https://" forState:UIControlStateNormal];
+        self.demoView.configAddressTF.text = @"arkpaastest.analysys.cn";
+        self.demoView.configPortTF.text = @"4089";
+    }
+    
+
+    [self updateShowView];
+    
+    
+}
+
+
+#pragma mark *** 按钮事件 ***
+
+/** 保存配置信息 */
 - (void)saveButtonAction {
-    [self.demoView.appKeyText resignFirstResponder];
-    [self.demoView.uploadText resignFirstResponder];
-    [self.demoView.noText1 resignFirstResponder];
-    [self.demoView.socketText resignFirstResponder];
-    [self.demoView.noText2 resignFirstResponder];
-    [self.demoView.configText resignFirstResponder];
-    [self.demoView.noText3 resignFirstResponder];
+    [self.view endEditing:YES];
 
-    if ([self.demoView.appKeyText.text isEqualToString: @""]) {
+    //  检查数据合法性
+    if (self.demoView.appKeyText.text.length == 0) {
         [self showAlert:@"app key设置异常"];
         return;
     }
-    if ([self.demoView.uploadText.text isEqualToString: @""] || [self.demoView.noText1.text isEqualToString: @""]) {
+    if (self.demoView.uploadAddressTF.text.length == 0 ||
+        self.demoView.uploadPortTF.text.length == 0) {
         [self showAlert:@"upload设置异常"];
         return;
     }
-    if ([self.demoView.socketText.text isEqualToString: @""] || [self.demoView.noText2.text isEqualToString: @""]) {
+    if (self.demoView.socketAddressTF.text.length == 0 ||
+        self.demoView.socketPortTF.text.length == 0) {
         [self showAlert:@"socket设置异常"];
         return;
     }
-    if ([self.demoView.configText.text isEqualToString: @""] || [self.demoView.noText3.text isEqualToString: @""]) {
+    if (self.demoView.configAddressTF.text.length == 0 ||
+        self.demoView.configPortTF.text.length == 0) {
         [self showAlert:@"config设置异常"];
         return;
     }
-    [self showAlert:@"保存成功！"];
     
-    self.demoView.uploadAddressText.text = [NSString stringWithFormat:@"%@%@%@%@",self.button1.titleLabel.text,self.demoView.uploadText.text,self.demoView.colonLabel1.text,self.demoView.noText1.text];
-    self.demoView.socketAddressText.text = [NSString stringWithFormat:@"%@%@%@%@",self.button2.titleLabel.text,self.demoView.socketText.text,self.demoView.colonLabel2.text,self.demoView.noText2.text];
-    self.demoView.configAddressText.text = [NSString stringWithFormat:@"%@%@%@%@",self.button3.titleLabel.text,self.demoView.configText.text,self.demoView.colonLabel3.text,self.demoView.noText3.text];
-    self.demoView.dataText.text = @"";
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setValue:self.demoView.appKeyText.text forKey:@"appKeyText"];
-    [defaults setValue:self.button1.titleLabel.text forKey:@"button1"];
-    [defaults setValue:self.demoView.uploadText.text forKey:@"uploadText"];
-    [defaults setValue:self.demoView.noText1.text forKey:@"noText1"];
-    [defaults setValue:self.button2.titleLabel.text forKey:@"button2"];
-    [defaults setValue:self.demoView.socketText.text forKey:@"socketText"];
-    [defaults setValue:self.demoView.noText2.text forKey:@"noText2"];
-    [defaults setValue:self.button3.titleLabel.text forKey:@"button3"];
-    [defaults setValue:self.demoView.configText.text forKey:@"configText"];
-    [defaults setValue:self.demoView.noText3.text forKey:@"noText3"];
-    [defaults setValue:self.demoView.uploadAddressText.text forKey:@"uploadAddressText"];
-    [defaults setValue:self.demoView.socketAddressText.text forKey:@"socketAddressText"];
-    [defaults setValue:self.demoView.configAddressText.text forKey:@"configAddressText"];
-
-    
-    [AnalysysAgent setUploadURL:self.demoView.uploadAddressText.text];
-    [AnalysysAgent setVisitorDebugURL:self.demoView.socketAddressText.text];
-    [AnalysysAgent setVisitorConfigURL:self.demoView.configAddressText.text];
+    //  保存本地数据
+    if ([self saveConfigInfo]) {
+        
+        [self updateShowView];
+        
+        //  修改SDK地址信息
+        [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
+        [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
+        [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
+        
+        [self showAlert:@"保存成功！"];
+    } else {
+        NSLog(@"数据存储失败!!!!!");
+    }
 }
 
-#pragma mark - 发送数据
-
-- (void)sendDataButtonAction {
-    [self.demoView.appKeyText resignFirstResponder];
-    [self.demoView.uploadText resignFirstResponder];
-    [self.demoView.noText1 resignFirstResponder];
-    [self.demoView.socketText resignFirstResponder];
-    [self.demoView.noText2 resignFirstResponder];
-    [self.demoView.configText resignFirstResponder];
-    [self.demoView.noText3 resignFirstResponder];
+/** 保存本地信息 */
+- (BOOL)saveConfigInfo {
+    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
     
-    //注册通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getChatlistFromNotification:) name:@"uploadingMsgNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getChatlistFromNotification:) name:@"uploadMsgSuccessNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getChatlistFromNotification:) name:@"uploadMsgFailedsNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getChatlistFromNotification:) name:@"reUploadMsgNotification" object:nil];
+    sdkConfigDic[APP_KEY] = self.demoView.appKeyText.text;
+    
+    sdkConfigDic[UP_PROTOCOL] = self.demoView.uploadBtn.titleLabel.text;
+    sdkConfigDic[UP_ADDRESS] = self.demoView.uploadAddressTF.text;
+    sdkConfigDic[UP_PORT] = self.demoView.uploadPortTF.text;
+    
+    sdkConfigDic[WS_PROTOCOL] = self.demoView.socketBtn.titleLabel.text;
+    sdkConfigDic[WS_ADDRESS] = self.demoView.socketAddressTF.text;
+    sdkConfigDic[WS_PORT] = self.demoView.socketPortTF.text;
+    
+    sdkConfigDic[CONFIG_PROTOCOL] = self.demoView.configBtn.titleLabel.text;
+    sdkConfigDic[CONFIG_ADDRESS] = self.demoView.configAddressTF.text;
+    sdkConfigDic[CONFIG_PORT] = self.demoView.configPortTF.text;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
+    return [defaults synchronize];
+}
 
-    [AnalysysAgent track:@"trackAction"];
+/** 刷新页面展示地址视图 */
+- (void)updateShowView {
+    //  赋值 展示控件
+    self.demoView.showUpAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.uploadBtn.titleLabel.text ?: @"",self.demoView.uploadAddressTF.text,self.demoView.uploadPortTF.text];
+    
+    self.demoView.showSocketAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.socketBtn.titleLabel.text ?: @"",self.demoView.socketAddressTF.text,self.demoView.socketPortTF.text];
+    
+    self.demoView.showConfigAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.configBtn.titleLabel.text ?: @"",self.demoView.configAddressTF.text,self.demoView.configPortTF.text];
+    self.demoView.dataText.text = @"";
+}
+
+/**  发送数据 */
+- (void)sendDataButtonAction {
+    [self.view endEditing:YES];
+
+    self.demoView.dataText.text = @"";
+    
+    NSString *trackEvent = [NSString stringWithFormat:@"track_%ld", arc4random() % 100];
+    [AnalysysAgent track:trackEvent];
+}
+
+#pragma mark *** DemoViewProtocol ***
+
+- (void)saveBtnAction:(UIButton *)btn {
+    [self saveButtonAction];
+}
+
+- (void)sendBtnAction:(UIButton *)btn {
+    [self sendDataButtonAction];
 }
 
 #pragma mark - 弹窗提示
 
 - (void)showAlert:(NSString *)_message {
-    UIAlertView *promptAlert = [[UIAlertView alloc] initWithTitle:@"提示:" message:_message delegate:nil cancelButtonTitle:@"cancel" otherButtonTitles:@"done", nil];
+    UIAlertView *promptAlert = [[UIAlertView alloc] initWithTitle:@"提示:" message:_message delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
     [promptAlert show];
 }
 
 #pragma mark - 接收通知
 
-- (void)getChatlistFromNotification:(NSNotification *)notification {
+- (void)receiveSDKNotification:(NSNotification *)notification {
     NSLog(@"收到数据接收通知:%@   :%@", notification.name, notification.object);
     dispatch_async(dispatch_get_main_queue(), ^{
         self.demoView.dataText.text = [NSString stringWithFormat:@"%@",notification.object];
@@ -198,27 +260,8 @@
 
 #pragma mark - 触摸屏幕时触发
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    self.button1.tag = 2;
-    [self.button1 startPackUpAnimation];
-    self.button2.tag = 2;
-    [self.button2 startPackUpAnimation];
-    self.button3.tag = 2;
-    [self.button3 startPackUpAnimation];
-    self.imageListView1.tag = 1;
-    [self.imageListView1 dropdown];
-    self.imageListView2.tag = 1;
-    [self.imageListView2 dropdown];
-    self.imageListView3.tag = 1;
-    [self.imageListView3 dropdown];
-    [self.demoView.appKeyText resignFirstResponder];
-    [self.demoView.uploadText resignFirstResponder];
-    [self.demoView.noText1 resignFirstResponder];
-    [self.demoView.socketText resignFirstResponder];
-    [self.demoView.noText2 resignFirstResponder];
-    [self.demoView.configText resignFirstResponder];
-    [self.demoView.noText3 resignFirstResponder];
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 @end

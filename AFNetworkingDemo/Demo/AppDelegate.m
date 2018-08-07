@@ -27,6 +27,9 @@
                            baseURL:@"arkpaastest.analysys.cn"
                        autoProfile:YES];
     
+    //  防止SDK 未初始化完成，异常错误信息通知已发出，导致无法接收通知
+    [NSThread sleepForTimeInterval:1.0];
+
     
     return YES;
 }

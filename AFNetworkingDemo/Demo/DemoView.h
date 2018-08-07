@@ -8,18 +8,31 @@
 
 #import <UIKit/UIKit.h>
 
+/** 协议 */
+@protocol DemoViewProtocol<NSObject>
+
+@required
+- (void)saveBtnAction:(UIButton *)btn;
+
+- (void)sendBtnAction:(UIButton *)btn;
+
+
+@end
+
+
+
 @interface DemoView : UIView
 
-@property (nonatomic, strong) UILabel *appKeyLabel;
+
+@property(nonatomic, assign) id <DemoViewProtocol>delegate;
+
 @property (nonatomic, strong) UITextField *appKeyText;
-@property (nonatomic, strong) UIView *underLine1;
-@property (nonatomic, strong) UILabel *uploadLabel, *socketLabel, *configLabel;
-@property (nonatomic, strong) UITextField *uploadText, *socketText, *configText;
-@property (nonatomic, strong) UILabel *uploadAddressLabel, *socketAddressLabel, *configAddressLabel;
-@property (nonatomic, strong) UILabel *colonLabel1, *colonLabel2, *colonLabel3;
-@property (nonatomic, strong) UITextField *noText1, *noText2, *noText3;
+@property (nonatomic, strong) UIButton *uploadBtn, *socketBtn, *configBtn;
+@property (nonatomic, strong) UITextField *uploadAddressTF, *socketAddressTF, *configAddressTF;
+@property (nonatomic, strong) UITextField *uploadPortTF, *socketPortTF, *configPortTF;
 @property (nonatomic, strong) UIButton *saveButton, *sendDataButton;
+@property (nonatomic, strong) UITextView *showUpAddressTV, *showSocketAddressTV, *showConfigAddressTV;
 @property (nonatomic, strong) UITextView *dataText;
-@property (nonatomic, strong) UITextView *uploadAddressText, *socketAddressText, *configAddressText;
+
 
 @end
