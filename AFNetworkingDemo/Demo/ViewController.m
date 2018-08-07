@@ -51,6 +51,13 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"reUploadMsgNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"NoNetWorkNotification" object:nil];
     
+<<<<<<< HEAD
+=======
+    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + 40, self.view.frame.size.width - 20, self.view.frame.size.height - 64)];
+    [self.view addSubview:self.demoView];
+    [self.demoView.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.demoView.sendDataButton addTarget:self action:@selector(sendDataButtonAction) forControlEvents:UIControlEventTouchUpInside];
+>>>>>>> 45d8f64d0bf5d1b008bcfd3d4c6c1643984967e5
     
     
 //    self.view.backgroundColor = [UIColor greenColor];
