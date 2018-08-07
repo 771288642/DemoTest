@@ -51,15 +51,6 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"reUploadMsgNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"NoNetWorkNotification" object:nil];
     
-<<<<<<< HEAD
-=======
-    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + 40, self.view.frame.size.width - 20, self.view.frame.size.height - 64)];
-    [self.view addSubview:self.demoView];
-    [self.demoView.saveButton addTarget:self action:@selector(saveButtonAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.demoView.sendDataButton addTarget:self action:@selector(sendDataButtonAction) forControlEvents:UIControlEventTouchUpInside];
->>>>>>> 45d8f64d0bf5d1b008bcfd3d4c6c1643984967e5
-    
-    
 //    self.view.backgroundColor = [UIColor greenColor];
     
     CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
@@ -143,11 +134,8 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
         self.demoView.configAddressTF.text = @"arkpaastest.analysys.cn";
         self.demoView.configPortTF.text = @"4089";
     }
-    
 
     [self updateShowView];
-    
-    
 }
 
 
@@ -155,7 +143,6 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 /** 保存配置信息 */
 - (void)saveButtonAction {
-    [self.view endEditing:YES];
 
     //  检查数据合法性
     if (self.demoView.appKeyText.text.length == 0) {
@@ -193,6 +180,8 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     } else {
         NSLog(@"数据存储失败!!!!!");
     }
+    
+    [self.view endEditing:YES];
 }
 
 /** 保存本地信息 */
@@ -215,6 +204,9 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
+    //  必须使用 EGAppKey 存储本地，SDK使用
+    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
+    
     return [defaults synchronize];
 }
 
@@ -232,11 +224,11 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 /**  发送数据 */
 - (void)sendDataButtonAction {
     [self.view endEditing:YES];
-
+    
     self.demoView.dataText.text = @"";
     
     NSString *trackEvent = [NSString stringWithFormat:@"track_%ld", arc4random() % 100];
-    [AnalysysAgent track:trackEvent];
+    [AnalysysAgent track:trackEvent properties:@{@"name":@"部署人员", @"city":@"北京"}];
 }
 
 #pragma mark *** DemoViewProtocol ***

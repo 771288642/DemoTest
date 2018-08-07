@@ -22,21 +22,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    
     [AnalysysAgent startWithAppKey:@"paastest"
                            channel:@"App Store"
                            baseURL:@"arkpaastest.analysys.cn"
                        autoProfile:YES];
     
-<<<<<<< HEAD
     //  防止SDK 未初始化完成，异常错误信息通知已发出，导致无法接收通知
     [NSThread sleepForTimeInterval:1.0];
 
-=======
-//    [AnalysysAgent setUploadURL:@"https://arkpaastest.analysys.cn:4089"];
-//    [AnalysysAgent setVisitorDebugURL:@"wss://arkpaastest.analysys.cn:4091"];
-//    [AnalysysAgent setVisitorConfigURL:@"https://arkpaastest.analysys.cn:4089"];
->>>>>>> 45d8f64d0bf5d1b008bcfd3d4c6c1643984967e5
-    
+
     return YES;
 }
 

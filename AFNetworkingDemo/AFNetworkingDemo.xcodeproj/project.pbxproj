@@ -1280,7 +1280,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.analysys.Demo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.analysys.AnalysysDeploy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1303,7 +1303,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.analysys.Demo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.analysys.AnalysysDeploy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

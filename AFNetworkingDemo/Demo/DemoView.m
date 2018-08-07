@@ -215,52 +215,52 @@
         [self addSubview:self.sendDataButton];
         
         //显示地址
-        UILabel *uploadAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.sendDataButton.frame.origin.y + 65, 85, 40)];
+        UILabel *uploadAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.sendDataButton.bottom, 85, 40)];
         uploadAddressLabel.text = @"upload地址:";
 //        self.uploadAddressLabel.backgroundColor = [UIColor redColor];
         uploadAddressLabel.font = [UIFont systemFontOfSize:15];
         uploadAddressLabel.textColor = UIColor.blueColor;
         [self addSubview:uploadAddressLabel];
         
-        self.showUpAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(uploadAddressLabel.right, uploadAddressLabel.frame.origin.y, frame.size.width - uploadAddressLabel.size.width, 40)];
+        self.showUpAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(uploadAddressLabel.right, uploadAddressLabel.top, frame.size.width - uploadAddressLabel.size.width, 40)];
 //        self.uploadAddressText.backgroundColor = [UIColor greenColor];
         self.showUpAddressTV.font = [UIFont systemFontOfSize:15];
         self.showUpAddressTV.textColor = UIColor.blueColor;
         self.showUpAddressTV.editable = NO;
         [self addSubview:self.showUpAddressTV];
         
-        UILabel *socketAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uploadAddressLabel.frame.origin.y + 45, 85, 40)];
+        UILabel *socketAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uploadAddressLabel.bottom, 85, 40)];
         socketAddressLabel.text = @"socket地址:";
         socketAddressLabel.font = [UIFont systemFontOfSize:15];
         socketAddressLabel.textColor = UIColor.blueColor;
         [self addSubview:socketAddressLabel];
         
-        self.showSocketAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(socketAddressLabel.right, socketAddressLabel.frame.origin.y, frame.size.width - socketAddressLabel.size.width, 40)];
+        self.showSocketAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(socketAddressLabel.right, socketAddressLabel.top, frame.size.width - socketAddressLabel.size.width, 40)];
         self.showSocketAddressTV.font = [UIFont systemFontOfSize:15];
         self.showSocketAddressTV.textColor = UIColor.blueColor;
         self.showSocketAddressTV.editable = NO;
         [self addSubview:self.showSocketAddressTV];
         
-        UILabel *configAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, socketAddressLabel.frame.origin.y + 45, 85, 40)];
+        UILabel *configAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, socketAddressLabel.bottom, 85, 40)];
         configAddressLabel.text = @"config地址:";
         configAddressLabel.font = [UIFont systemFontOfSize:15];
         configAddressLabel.textColor = UIColor.blueColor;
         [self addSubview:configAddressLabel];
         
-        self.showConfigAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(configAddressLabel.right, configAddressLabel.frame.origin.y, frame.size.width - configAddressLabel.size.width, 40)];
+        self.showConfigAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(configAddressLabel.right, configAddressLabel.top, frame.size.width - configAddressLabel.size.width, 40)];
         self.showConfigAddressTV.font = [UIFont systemFontOfSize:15];
         self.showConfigAddressTV.textColor = UIColor.blueColor;
         self.showConfigAddressTV.editable = NO;
         [self addSubview:self.showConfigAddressTV];
         
-        UILabel *sendStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, configAddressLabel.bottom + 10, self.width, 30)];
+        UILabel *sendStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, configAddressLabel.bottom, self.width, 30)];
         sendStatusLabel.textColor = [UIColor purpleColor];
         sendStatusLabel.text = @"数据发送结果:";
         [self addSubview:sendStatusLabel];
         
         //显示通知
-        self.dataText = [[UITextView alloc] initWithFrame:CGRectMake(0, sendStatusLabel.bottom + 10, self.width, self.height - sendStatusLabel.bottom - 10)];
-        self.dataText.font = [UIFont systemFontOfSize:14];
+        self.dataText = [[UITextView alloc] initWithFrame:CGRectMake(0, sendStatusLabel.bottom, self.width, self.height - sendStatusLabel.bottom)];
+        self.dataText.font = [UIFont systemFontOfSize:15];
         self.dataText.textColor = UIColor.grayColor;
         self.dataText.editable = NO;
         [self addSubview:self.dataText];
