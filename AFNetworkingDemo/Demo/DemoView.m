@@ -203,8 +203,19 @@
         [configPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:configPortBtn];
         
-        //保存设置按钮
-        self.saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, configLabel.top + 35, self.width, 60)];
+        //保存upload按钮
+        self.saveUploadButton = [[UIButton alloc] initWithFrame:CGRectMake(0, configLabel.top + 35, self.width/2 - 5, 60)];
+        [self.saveUploadButton addTarget:self action:@selector(saveUploadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.saveUploadButton.layer.borderWidth = 2;
+        [self.saveUploadButton.layer setCornerRadius:5];
+        self.saveUploadButton.layer.masksToBounds = YES;
+        [self.saveUploadButton.layer setBorderColor:[UIColor grayColor].CGColor];
+        [self.saveUploadButton setTitle:@"保存upload" forState:UIControlStateNormal];
+        [self.saveUploadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self addSubview:self.saveUploadButton];
+        
+        //保存全部按钮
+        self.saveButton = [[UIButton alloc] initWithFrame:CGRectMake(self.saveUploadButton.right + 10, configLabel.top + 35, self.width/2 - 5, 60)];
         [self.saveButton addTarget:self action:@selector(saveButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.saveButton.layer.borderWidth = 2;
         [self.saveButton.layer setCornerRadius:5];
@@ -364,6 +375,16 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self endEditing:YES];
     
+    return YES;
+}
+
+#pragma mark - TextField禁止输入空格
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *tem = [[string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]componentsJoinedByString:@""];
+    if (![string isEqualToString:tem]) {
+        return NO;
+    }
     return YES;
 }
 

@@ -158,11 +158,11 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     sdkConfigDic[UP_PROTOCOL] = configInfo[UP_PROTOCOL];
     sdkConfigDic[UP_ADDRESS] = configInfo[UP_ADDRESS];
     sdkConfigDic[UP_PORT] = configInfo[UP_PORT];
-    
+
     sdkConfigDic[WS_PROTOCOL] = configInfo[WS_PROTOCOL];
     sdkConfigDic[WS_ADDRESS] = configInfo[WS_ADDRESS];
     sdkConfigDic[WS_PORT] = configInfo[WS_PORT];
-    
+
     sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
     sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
     sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
