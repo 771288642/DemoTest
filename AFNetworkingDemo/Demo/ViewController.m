@@ -175,6 +175,38 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     [self.view endEditing:YES];
 }
 
+/** 保存upload信息 */
+- (void)saveUploadButtonAction {
+    if (self.demoView.uploadAddressTF.text.length == 0 ||
+        self.demoView.uploadPortTF.text.length == 0) {
+        [self showAlert:@"upload设置异常"];
+        return;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
+    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
+    sdkConfigDic[APP_KEY] = configInfo[APP_KEY];
+    
+    sdkConfigDic[UP_PROTOCOL] = self.demoView.uploadBtn.titleLabel.text;
+    sdkConfigDic[UP_ADDRESS] = self.demoView.uploadAddressTF.text;
+    sdkConfigDic[UP_PORT] = self.demoView.uploadPortTF.text;
+    
+    sdkConfigDic[WS_PROTOCOL] = configInfo[WS_PROTOCOL];
+    sdkConfigDic[WS_ADDRESS] = configInfo[WS_ADDRESS];
+    sdkConfigDic[WS_PORT] = configInfo[WS_PORT];
+    
+    sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
+    sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
+    sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
+    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
+    //  必须使用 EGAppKey 存储本地，SDK使用ß®
+    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
+    
+    [self showAlert:@"成功保存App Key ！"];
+    
+    [self.view endEditing:YES];
+}
+
 /** 保存配置信息 */
 - (void)saveButtonAction {
 
@@ -268,6 +300,10 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 - (void)saveAppKeyBtnAction:(UIButton *)btn {
     [self saveAppKeyButtonAction];
+}
+
+- (void)saveUploadBtnAction:(UIButton *)btn {
+    [self saveUploadButtonAction];
 }
 
 - (void)saveBtnAction:(UIButton *)btn {

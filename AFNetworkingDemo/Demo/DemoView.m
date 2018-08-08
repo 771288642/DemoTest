@@ -100,8 +100,6 @@
         [portBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:portBtn];
         
-        
-        
         //第三行socket
         UILabel *socketLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uploadLabel.top + 35, 60, 30)];
         socketLabel.textColor = UIColor.grayColor;
@@ -371,7 +369,7 @@
 
 /** 发送数据 */
 - (void)sendDataAction:(UIButton *)btn {
-    if ([self.delegate respondsToSelector:@selector(saveBtnAction:)]) {
+    if ([self.delegate respondsToSelector:@selector(sendBtnAction:)]) {
         [self.delegate sendBtnAction:btn];
     }
 }
