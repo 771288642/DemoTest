@@ -393,6 +393,13 @@
     return YES;
 }
 
+
+#pragma mark - 触摸屏幕时触发
+
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self endEditing:YES];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
