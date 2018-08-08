@@ -259,7 +259,7 @@
         [self addSubview:sendStatusLabel];
         
         //显示通知
-        self.dataText = [[UITextView alloc] initWithFrame:CGRectMake(0, sendStatusLabel.bottom, self.width, self.height - sendStatusLabel.bottom)];
+        self.dataText = [[UITextView alloc] initWithFrame:CGRectMake(0, sendStatusLabel.bottom, self.width, self.height)];
         self.dataText.font = [UIFont systemFontOfSize:15];
         self.dataText.textColor = UIColor.grayColor;
         self.dataText.editable = NO;

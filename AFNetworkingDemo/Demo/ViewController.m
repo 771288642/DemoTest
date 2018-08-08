@@ -61,6 +61,7 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     //  初始化底层视图
     self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
     self.demoView.delegate = self;
+    self.demoView.contentSize = CGSizeMake(self.demoView.width, self.demoView.height + 350);
 //    self.demoView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.demoView];
     

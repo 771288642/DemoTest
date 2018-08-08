@@ -21,7 +21,7 @@
 
 
 
-@interface DemoView : UIView
+@interface DemoView : UIScrollView
 
 
 @property(nonatomic, assign) id <DemoViewProtocol>delegate;
