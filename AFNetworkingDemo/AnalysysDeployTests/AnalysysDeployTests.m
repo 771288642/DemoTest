@@ -1,6 +1,6 @@
 //
-//  DemoTests.m
-//  DemoTests
+//  AnalysysDeployTests.m
+//  AnalysysDeployTests
 //
 //  Created by analysysmac-1 on 2018/7/30.
 //  Copyright © 2018年 analysysmac-1. All rights reserved.
@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface DemoTests : XCTestCase
+@interface AnalysysDeployTests : XCTestCase
 
 @end
 
-@implementation DemoTests
+@implementation AnalysysDeployTests
 
 - (void)setUp {
     [super setUp];

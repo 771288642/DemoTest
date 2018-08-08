@@ -13,8 +13,8 @@
 		2D09B789210ED55B0068B080 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D09B788210ED55B0068B080 /* Assets.xcassets */; };
 		2D09B78C210ED55B0068B080 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D09B78A210ED55B0068B080 /* LaunchScreen.storyboard */; };
 		2D09B78F210ED55B0068B080 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B78E210ED55B0068B080 /* main.m */; };
-		2D09B799210ED55B0068B080 /* DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B798210ED55B0068B080 /* DemoTests.m */; };
-		2D09B7A4210ED55B0068B080 /* DemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B7A3210ED55B0068B080 /* DemoUITests.m */; };
+		2D09B799210ED55B0068B080 /* AnalysysDeployTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B798210ED55B0068B080 /* AnalysysDeployTests.m */; };
+		2D09B7A4210ED55B0068B080 /* AnalysysDeployUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B7A3210ED55B0068B080 /* AnalysysDeployUITests.m */; };
 		2D09B7C021119A240068B080 /* DemoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B7BF21119A240068B080 /* DemoView.m */; };
 		2D09B7C32112CF2F0068B080 /* UIView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B7C22112CF2F0068B080 /* UIView+Addition.m */; };
 		2D09B7D02114369C0068B080 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D09B7CF2114369B0068B080 /* libicucore.tbd */; };
@@ -47,7 +47,7 @@
 		2D09B6D021088F550068B080 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2D09B6D221088F5F0068B080 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		2D09B6D421088F680068B080 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		2D09B77D210ED5520068B080 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D09B77D210ED5520068B080 /* AnalysysDeploy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnalysysDeploy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D09B77F210ED5530068B080 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2D09B780210ED5530068B080 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2D09B782210ED5530068B080 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -57,11 +57,11 @@
 		2D09B78B210ED55B0068B080 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2D09B78D210ED55B0068B080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D09B78E210ED55B0068B080 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2D09B794210ED55B0068B080 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D09B798210ED55B0068B080 /* DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoTests.m; sourceTree = "<group>"; };
+		2D09B794210ED55B0068B080 /* AnalysysDeployTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnalysysDeployTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D09B798210ED55B0068B080 /* AnalysysDeployTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnalysysDeployTests.m; sourceTree = "<group>"; };
 		2D09B79A210ED55B0068B080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2D09B79F210ED55B0068B080 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D09B7A3210ED55B0068B080 /* DemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoUITests.m; sourceTree = "<group>"; };
+		2D09B79F210ED55B0068B080 /* AnalysysDeployUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AnalysysDeployUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D09B7A3210ED55B0068B080 /* AnalysysDeployUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnalysysDeployUITests.m; sourceTree = "<group>"; };
 		2D09B7A5210ED55B0068B080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D09B7BE21119A240068B080 /* DemoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoView.h; sourceTree = "<group>"; };
 		2D09B7BF21119A240068B080 /* DemoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoView.m; sourceTree = "<group>"; };
@@ -106,9 +106,9 @@
 		2D09B67821088EF40068B080 = {
 			isa = PBXGroup;
 			children = (
-				2D09B77E210ED5530068B080 /* Demo */,
-				2D09B797210ED55B0068B080 /* DemoTests */,
-				2D09B7A2210ED55B0068B080 /* DemoUITests */,
+				2D09B77E210ED5530068B080 /* AnalysysDeploy */,
+				2D09B797210ED55B0068B080 /* AnalysysDeployTests */,
+				2D09B7A2210ED55B0068B080 /* AnalysysDeployUITests */,
 				2D09B68221088EF40068B080 /* Products */,
 				2D09B6CB21088F420068B080 /* Frameworks */,
 			);
@@ -117,9 +117,9 @@
 		2D09B68221088EF40068B080 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2D09B77D210ED5520068B080 /* Demo.app */,
-				2D09B794210ED55B0068B080 /* DemoTests.xctest */,
-				2D09B79F210ED55B0068B080 /* DemoUITests.xctest */,
+				2D09B77D210ED5520068B080 /* AnalysysDeploy.app */,
+				2D09B794210ED55B0068B080 /* AnalysysDeployTests.xctest */,
+				2D09B79F210ED55B0068B080 /* AnalysysDeployUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,7 +137,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2D09B77E210ED5530068B080 /* Demo */ = {
+		2D09B77E210ED5530068B080 /* AnalysysDeploy */ = {
 			isa = PBXGroup;
 			children = (
 				2D09B7D321146B5E0068B080 /* AnalysysAgent.framework */,
@@ -160,33 +160,33 @@
 				E86E81B92118793900ACC084 /* ListTableViewCell.m */,
 				E86E81BA2118793900ACC084 /* ListTableViewCell.xib */,
 			);
-			path = Demo;
+			path = AnalysysDeploy;
 			sourceTree = "<group>";
 		};
-		2D09B797210ED55B0068B080 /* DemoTests */ = {
+		2D09B797210ED55B0068B080 /* AnalysysDeployTests */ = {
 			isa = PBXGroup;
 			children = (
-				2D09B798210ED55B0068B080 /* DemoTests.m */,
+				2D09B798210ED55B0068B080 /* AnalysysDeployTests.m */,
 				2D09B79A210ED55B0068B080 /* Info.plist */,
 			);
-			path = DemoTests;
+			path = AnalysysDeployTests;
 			sourceTree = "<group>";
 		};
-		2D09B7A2210ED55B0068B080 /* DemoUITests */ = {
+		2D09B7A2210ED55B0068B080 /* AnalysysDeployUITests */ = {
 			isa = PBXGroup;
 			children = (
-				2D09B7A3210ED55B0068B080 /* DemoUITests.m */,
+				2D09B7A3210ED55B0068B080 /* AnalysysDeployUITests.m */,
 				2D09B7A5210ED55B0068B080 /* Info.plist */,
 			);
-			path = DemoUITests;
+			path = AnalysysDeployUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2D09B77C210ED5520068B080 /* Demo */ = {
+		2D09B77C210ED5520068B080 /* AnalysysDeploy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D09B7A6210ED55B0068B080 /* Build configuration list for PBXNativeTarget "Demo" */;
+			buildConfigurationList = 2D09B7A6210ED55B0068B080 /* Build configuration list for PBXNativeTarget "AnalysysDeploy" */;
 			buildPhases = (
 				2D09B779210ED5520068B080 /* Sources */,
 				2D09B77A210ED5520068B080 /* Frameworks */,
@@ -196,14 +196,14 @@
 			);
 			dependencies = (
 			);
-			name = Demo;
+			name = AnalysysDeploy;
 			productName = Demo;
-			productReference = 2D09B77D210ED5520068B080 /* Demo.app */;
+			productReference = 2D09B77D210ED5520068B080 /* AnalysysDeploy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D09B793210ED55B0068B080 /* DemoTests */ = {
+		2D09B793210ED55B0068B080 /* AnalysysDeployTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D09B7A9210ED55B0068B080 /* Build configuration list for PBXNativeTarget "DemoTests" */;
+			buildConfigurationList = 2D09B7A9210ED55B0068B080 /* Build configuration list for PBXNativeTarget "AnalysysDeployTests" */;
 			buildPhases = (
 				2D09B790210ED55B0068B080 /* Sources */,
 				2D09B791210ED55B0068B080 /* Frameworks */,
@@ -214,14 +214,14 @@
 			dependencies = (
 				2D09B796210ED55B0068B080 /* PBXTargetDependency */,
 			);
-			name = DemoTests;
+			name = AnalysysDeployTests;
 			productName = DemoTests;
-			productReference = 2D09B794210ED55B0068B080 /* DemoTests.xctest */;
+			productReference = 2D09B794210ED55B0068B080 /* AnalysysDeployTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		2D09B79E210ED55B0068B080 /* DemoUITests */ = {
+		2D09B79E210ED55B0068B080 /* AnalysysDeployUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D09B7AC210ED55B0068B080 /* Build configuration list for PBXNativeTarget "DemoUITests" */;
+			buildConfigurationList = 2D09B7AC210ED55B0068B080 /* Build configuration list for PBXNativeTarget "AnalysysDeployUITests" */;
 			buildPhases = (
 				2D09B79B210ED55B0068B080 /* Sources */,
 				2D09B79C210ED55B0068B080 /* Frameworks */,
@@ -232,9 +232,9 @@
 			dependencies = (
 				2D09B7A1210ED55B0068B080 /* PBXTargetDependency */,
 			);
-			name = DemoUITests;
+			name = AnalysysDeployUITests;
 			productName = DemoUITests;
-			productReference = 2D09B79F210ED55B0068B080 /* DemoUITests.xctest */;
+			productReference = 2D09B79F210ED55B0068B080 /* AnalysysDeployUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -259,7 +259,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2D09B67C21088EF40068B080 /* Build configuration list for PBXProject "AFNetworkingDemo" */;
+			buildConfigurationList = 2D09B67C21088EF40068B080 /* Build configuration list for PBXProject "AnalysysDeploy" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -272,9 +272,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2D09B77C210ED5520068B080 /* Demo */,
-				2D09B793210ED55B0068B080 /* DemoTests */,
-				2D09B79E210ED55B0068B080 /* DemoUITests */,
+				2D09B77C210ED5520068B080 /* AnalysysDeploy */,
+				2D09B793210ED55B0068B080 /* AnalysysDeployTests */,
+				2D09B79E210ED55B0068B080 /* AnalysysDeployUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -326,7 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D09B799210ED55B0068B080 /* DemoTests.m in Sources */,
+				2D09B799210ED55B0068B080 /* AnalysysDeployTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D09B7A4210ED55B0068B080 /* DemoUITests.m in Sources */,
+				2D09B7A4210ED55B0068B080 /* AnalysysDeployUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,12 +343,12 @@
 /* Begin PBXTargetDependency section */
 		2D09B796210ED55B0068B080 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D09B77C210ED5520068B080 /* Demo */;
+			target = 2D09B77C210ED5520068B080 /* AnalysysDeploy */;
 			targetProxy = 2D09B795210ED55B0068B080 /* PBXContainerItemProxy */;
 		};
 		2D09B7A1210ED55B0068B080 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D09B77C210ED5520068B080 /* Demo */;
+			target = 2D09B77C210ED5520068B080 /* AnalysysDeploy */;
 			targetProxy = 2D09B7A0210ED55B0068B080 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -491,9 +491,9 @@
 				DEVELOPMENT_TEAM = 95YHL39M2F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Demo",
+					"$(PROJECT_DIR)/AnalysysDeploy",
 				);
-				INFOPLIST_FILE = Demo/Info.plist;
+				INFOPLIST_FILE = AnalysysDeploy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -514,9 +514,9 @@
 				DEVELOPMENT_TEAM = 95YHL39M2F;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Demo",
+					"$(PROJECT_DIR)/AnalysysDeploy",
 				);
-				INFOPLIST_FILE = Demo/Info.plist;
+				INFOPLIST_FILE = AnalysysDeploy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -606,7 +606,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2D09B67C21088EF40068B080 /* Build configuration list for PBXProject "AFNetworkingDemo" */ = {
+		2D09B67C21088EF40068B080 /* Build configuration list for PBXProject "AnalysysDeploy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D09B6AB21088EFD0068B080 /* Debug */,
@@ -615,7 +615,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D09B7A6210ED55B0068B080 /* Build configuration list for PBXNativeTarget "Demo" */ = {
+		2D09B7A6210ED55B0068B080 /* Build configuration list for PBXNativeTarget "AnalysysDeploy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D09B7A7210ED55B0068B080 /* Debug */,
@@ -624,7 +624,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D09B7A9210ED55B0068B080 /* Build configuration list for PBXNativeTarget "DemoTests" */ = {
+		2D09B7A9210ED55B0068B080 /* Build configuration list for PBXNativeTarget "AnalysysDeployTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D09B7AA210ED55B0068B080 /* Debug */,
@@ -633,7 +633,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D09B7AC210ED55B0068B080 /* Build configuration list for PBXNativeTarget "DemoUITests" */ = {
+		2D09B7AC210ED55B0068B080 /* Build configuration list for PBXNativeTarget "AnalysysDeployUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D09B7AD210ED55B0068B080 /* Debug */,
