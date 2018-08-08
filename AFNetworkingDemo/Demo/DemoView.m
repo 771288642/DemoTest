@@ -45,7 +45,7 @@
         [self.saveAppKeyButton.layer setCornerRadius:5];
         self.saveAppKeyButton.layer.masksToBounds = YES;
         [self.saveAppKeyButton.layer setBorderColor:[UIColor grayColor].CGColor];
-        [self.saveAppKeyButton setTitle:@"保存" forState:UIControlStateNormal];
+        [self.saveAppKeyButton setTitle:@"保存Key" forState:UIControlStateNormal];
         self.saveAppKeyButton.titleLabel.font = [UIFont systemFontOfSize: 14];
         [self.saveAppKeyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.saveAppKeyButton];
@@ -352,6 +352,13 @@
 - (void)saveAppKeyButtonAction:(UIButton *)btn {
     if ([self.delegate respondsToSelector:@selector(saveAppKeyBtnAction:)]) {
         [self.delegate saveAppKeyBtnAction:btn];
+    }
+}
+
+/** 保存upload */
+- (void)saveUploadButtonAction:(UIButton *)btn {
+    if ([self.delegate respondsToSelector:@selector(saveUploadBtnAction:)]) {
+        [self.delegate saveUploadBtnAction:btn];
     }
 }
 

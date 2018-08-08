@@ -14,6 +14,7 @@
 @required
 
 - (void)saveAppKeyBtnAction:(UIButton *)btn;
+- (void)saveUploadBtnAction:(UIButton *)btn;
 - (void)saveBtnAction:(UIButton *)btn;
 - (void)sendBtnAction:(UIButton *)btn;
 

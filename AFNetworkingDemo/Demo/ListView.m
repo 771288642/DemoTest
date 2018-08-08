@@ -63,7 +63,7 @@ static CGFloat const tableViewHeight = 40.f;
     [keyWindow addSubview:listView];
     
     //  坐标转换
-    listView.clickViewRect = [view.superview convertRect:view.frame toView:keyWindow];
+    listView.clickViewRect = [view convertRect:view.bounds toView:keyWindow];
     NSLog(@"viewRect:%@", NSStringFromCGRect(listView.clickViewRect));
     
     [listView addSubview:listView.tableView];
@@ -75,8 +75,10 @@ static CGFloat const tableViewHeight = 40.f;
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 80, tableViewHeight*self.dataArray.count)];
-        _tableView.center = self.clickView.center;
-        _tableView.top = self.clickViewRect.origin.y + self.clickView.height;;
+        CGFloat centerX = self.clickViewRect.origin.x + self.clickViewRect.size.width/2.0;
+        CGFloat centgerY = self.clickViewRect.origin.y + self.clickViewRect.size.height/2.0;
+        _tableView.center = CGPointMake(centerX, centgerY);
+        _tableView.top = self.clickViewRect.origin.y + self.clickView.height;
         [_tableView registerNib:[UINib nibWithNibName:@"ListTableViewCell" bundle:nil] forCellReuseIdentifier:@"ListTableViewCell"];
         _tableView.dataSource = self;
         _tableView.delegate = self;
