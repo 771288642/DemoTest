@@ -28,14 +28,14 @@
         appKeyLabel.text = @"App Key:";
         [self addSubview:appKeyLabel];
         
-        self.appKeyText = [[UITextField alloc] initWithFrame:CGRectMake(appKeyLabel.frame.size.width + 5, appKeyLabel.frame.origin.y, frame.size.width - appKeyLabel.frame.size.width - 5, appKeyLabel.frame.size.height)];
+        self.appKeyText = [[UITextField alloc] initWithFrame:CGRectMake(appKeyLabel.width + 5, appKeyLabel.top, self.width - appKeyLabel.width - 5, appKeyLabel.height)];
         self.appKeyText.delegate = self;
         self.appKeyText.placeholder = @"paastest";
         self.appKeyText.clearButtonMode = UITextFieldViewModeAlways;
         self.appKeyText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [self addSubview:self.appKeyText];
         
-        UIView *underLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, self.appKeyText.frame.size.height - 2, self.appKeyText.frame.size.width, 2)];
+        UIView *underLine1 = [[UIView alloc] initWithFrame:CGRectMake(0, self.appKeyText.height - 2, self.appKeyText.width, 2)];
         underLine1.backgroundColor = UIColor.grayColor;
         [self.appKeyText addSubview:underLine1];
         
@@ -54,7 +54,7 @@
         [self.uploadBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.uploadBtn];
         
-        UILabel *colonLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width*3/4, uploadLabel.frame.origin.y, 5, 30)];
+        UILabel *colonLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(self.width - 85, uploadLabel.frame.origin.y, 5, 30)];
         colonLabel1.textColor = UIColor.grayColor;
         colonLabel1.text = @":";
         [self addSubview:colonLabel1];
@@ -70,7 +70,7 @@
         [self addSubview:self.uploadAddressTF];
         [self.uploadAddressTF addSubview:underLine2];
 
-        self.uploadPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel1.frame.origin.x + 7, colonLabel1.frame.origin.y, frame.size.width - colonLabel1.frame.origin.x - 40, 30)];
+        self.uploadPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel1.frame.origin.x + 7, colonLabel1.frame.origin.y, 45, 30)];
         self.uploadPortTF.placeholder = @"8089";
         self.uploadPortTF.font = [UIFont systemFontOfSize:15];
         self.uploadPortTF.delegate = self;
@@ -106,7 +106,7 @@
         [self.socketBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.socketBtn];
         
-        UILabel *colonLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width*3/4, socketLabel.frame.origin.y, 5, 30)];
+        UILabel *colonLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(self.width - 85, socketLabel.frame.origin.y, 5, 30)];
         colonLabel2.textColor = UIColor.grayColor;
         colonLabel2.text = @":";
         [self addSubview:colonLabel2];
@@ -122,7 +122,7 @@
         [self addSubview:self.socketAddressTF];
         [self.socketAddressTF addSubview:underLine4];
         
-        self.socketPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel2.frame.origin.x + 7, colonLabel2.frame.origin.y, frame.size.width - colonLabel2.frame.origin.x - 39, 30)];
+        self.socketPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel2.frame.origin.x + 7, colonLabel2.frame.origin.y, 45, 30)];
         self.socketPortTF.placeholder = @"9091";
         self.socketPortTF.font = [UIFont systemFontOfSize:15];
         self.socketPortTF.delegate = self;
@@ -157,7 +157,7 @@
         [self.configBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.configBtn];
         
-        UILabel *colonLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width*3/4, configLabel.frame.origin.y, 5, 30)];
+        UILabel *colonLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(self.width - 85, configLabel.frame.origin.y, 5, 30)];
         colonLabel3.textColor = UIColor.grayColor;
         colonLabel3.text = @":";
         [self addSubview:colonLabel3];
@@ -173,7 +173,7 @@
         [self addSubview:self.configAddressTF];
         [self.configAddressTF addSubview:underLine6];
         
-        self.configPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel3.frame.origin.x + 7, colonLabel3.frame.origin.y, frame.size.width - colonLabel3.frame.origin.x - 39, 30)];
+        self.configPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel3.frame.origin.x + 7, colonLabel3.frame.origin.y, 45, 30)];
         self.configPortTF.placeholder = @"8089";
         self.configPortTF.font = [UIFont systemFontOfSize:15];
         self.configPortTF.delegate = self;
