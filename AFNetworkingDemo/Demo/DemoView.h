@@ -12,21 +12,20 @@
 @protocol DemoViewProtocol<NSObject>
 
 @required
+
+- (void)saveAppKeyBtnAction:(UIButton *)btn;
 - (void)saveBtnAction:(UIButton *)btn;
-
 - (void)sendBtnAction:(UIButton *)btn;
-
 
 @end
 
 
-
 @interface DemoView : UIScrollView
-
 
 @property(nonatomic, assign) id <DemoViewProtocol>delegate;
 
 @property (nonatomic, strong) UITextField *appKeyText;
+@property (nonatomic, strong) UIButton *saveAppKeyButton;
 @property (nonatomic, strong) UIButton *uploadBtn, *socketBtn, *configBtn;
 @property (nonatomic, strong) UITextField *uploadAddressTF, *socketAddressTF, *configAddressTF;
 @property (nonatomic, strong) UITextField *uploadPortTF, *socketPortTF, *configPortTF;

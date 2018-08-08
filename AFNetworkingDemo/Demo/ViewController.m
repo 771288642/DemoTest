@@ -134,6 +134,8 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
         [self.demoView.configBtn setTitle:@"https://" forState:UIControlStateNormal];
         self.demoView.configAddressTF.text = @"arkpaastest.analysys.cn";
         self.demoView.configPortTF.text = @"4089";
+        
+        [self saveConfigInfo];
     }
 
     [self updateShowView];
@@ -141,6 +143,37 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 
 #pragma mark *** 按钮事件 ***
+
+/** 保存App Key信息 */
+- (void)saveAppKeyButtonAction {
+    if (self.demoView.appKeyText.text.length == 0) {
+        [self showAlert:@"app key设置异常"];
+        return;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
+     NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
+    sdkConfigDic[APP_KEY] = self.demoView.appKeyText.text;
+    
+    sdkConfigDic[UP_PROTOCOL] = configInfo[UP_PROTOCOL];
+    sdkConfigDic[UP_ADDRESS] = configInfo[UP_ADDRESS];
+    sdkConfigDic[UP_PORT] = configInfo[UP_PORT];
+    
+    sdkConfigDic[WS_PROTOCOL] = configInfo[WS_PROTOCOL];
+    sdkConfigDic[WS_ADDRESS] = configInfo[WS_ADDRESS];
+    sdkConfigDic[WS_PORT] = configInfo[WS_PORT];
+    
+    sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
+    sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
+    sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
+    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
+    //  必须使用 EGAppKey 存储本地，SDK使用ß®
+    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
+    
+    [self showAlert:@"成功保存App Key ！"];
+
+    [self.view endEditing:YES];
+}
 
 /** 保存配置信息 */
 - (void)saveButtonAction {
@@ -166,7 +199,6 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
         return;
     }
     
-    
     //  保存本地数据
     if ([self saveConfigInfo]) {
         
@@ -177,7 +209,7 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
         [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
         [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
         
-        [self showAlert:@"保存成功！"];
+        [self showAlert:@"全部保存成功！"];
     } else {
         NSLog(@"数据存储失败!!!!!");
     }
@@ -233,6 +265,10 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 }
 
 #pragma mark *** DemoViewProtocol ***
+
+- (void)saveAppKeyBtnAction:(UIButton *)btn {
+    [self saveAppKeyButtonAction];
+}
 
 - (void)saveBtnAction:(UIButton *)btn {
     [self saveButtonAction];
