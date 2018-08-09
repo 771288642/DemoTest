@@ -185,23 +185,27 @@
         [self.configBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.configBtn];
         
-        UILabel *colonLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(self.width - 85, configLabel.top, 5, 30)];
-        colonLabel3.textColor = UIColor.grayColor;
-        colonLabel3.text = @":";
-        [self addSubview:colonLabel3];
+        self.saveConfigButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 100, configLabel.top, 100, 30)];
+        [self.saveConfigButton addTarget:self action:@selector(saveConfigButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.saveConfigButton.layer.borderWidth = 2;
+        [self.saveConfigButton.layer setCornerRadius:5];
+        self.saveConfigButton.layer.masksToBounds = YES;
+        [self.saveConfigButton.layer setBorderColor:[UIColor grayColor].CGColor];
+        [self.saveConfigButton setTitle:@"保存config" forState:UIControlStateNormal];
+        self.saveConfigButton.titleLabel.font = [UIFont systemFontOfSize: 14];
+        [self.saveConfigButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self addSubview:self.saveConfigButton];
         
-        self.configAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, configLabel.top, colonLabel3.left - 125, configLabel.height)];
-        self.configAddressTF.placeholder = @"arkpaastest.analysys.cn";
-        self.configAddressTF.font = [UIFont systemFontOfSize:15];
-        self.configAddressTF.delegate = self;
-        self.configAddressTF.clearButtonMode = UITextFieldViewModeAlways;
-        self.configAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        UIView *underLine6 = [[UIView alloc] initWithFrame:CGRectMake(0, self.configAddressTF.height - 2, self.configAddressTF.width, 2)];
-        underLine6.backgroundColor = UIColor.grayColor;
-        [self addSubview:self.configAddressTF];
-        [self.configAddressTF addSubview:underLine6];
+        UIButton *configPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        configPortBtn.tag = 202;
+        configPortBtn.frame = CGRectMake(self.saveConfigButton.left - 40, configLabel.top, 40, 30);
+        [configPortBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
+        [configPortBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        //        httpBtn.backgroundColor = [UIColor redColor];
+        [configPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:configPortBtn];
         
-        self.configPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel3.left + 7, colonLabel3.top, 45, 30)];
+        self.configPortTF = [[UITextField alloc] initWithFrame:CGRectMake(configPortBtn.left - 45, configLabel.top, 45, 30)];
         self.configPortTF.placeholder = @"8089";
         self.configPortTF.font = [UIFont systemFontOfSize:15];
         self.configPortTF.delegate = self;
@@ -211,14 +215,21 @@
         [self addSubview:self.configPortTF];
         [self.configPortTF addSubview:underLine7];
         
-        UIButton *configPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        configPortBtn.tag = 202;
-        configPortBtn.frame = CGRectMake(self.right - 40, configLabel.top, 40, 30);
-        [configPortBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
-        [configPortBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        //        httpBtn.backgroundColor = [UIColor redColor];
-        [configPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:configPortBtn];
+        UILabel *colonLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(self.configPortTF.left - 7, configLabel.top, 5, 30)];
+        colonLabel3.textColor = UIColor.grayColor;
+        colonLabel3.text = @":";
+        [self addSubview:colonLabel3];
+        
+        self.configAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, configLabel.top, colonLabel3.left - 127, configLabel.height)];
+        self.configAddressTF.placeholder = @"arkpaastest.analysys.cn";
+        self.configAddressTF.font = [UIFont systemFontOfSize:15];
+        self.configAddressTF.delegate = self;
+        self.configAddressTF.clearButtonMode = UITextFieldViewModeAlways;
+        self.configAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        UIView *underLine6 = [[UIView alloc] initWithFrame:CGRectMake(0, self.configAddressTF.height - 2, self.configAddressTF.width, 2)];
+        underLine6.backgroundColor = UIColor.grayColor;
+        [self addSubview:self.configAddressTF];
+        [self.configAddressTF addSubview:underLine6];
         
         //保存全部按钮
         self.saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, configLabel.bottom + 5, self.width, 60)];
@@ -368,10 +379,17 @@
     }
 }
 
-/** 保存upload */
+/** 保存socket */
 - (void)saveSocketButtonAction:(UIButton *)btn {
     if ([self.delegate respondsToSelector:@selector(saveSocketBtnAction:)]) {
         [self.delegate saveSocketBtnAction:btn];
+    }
+}
+
+/** 保存config */
+- (void)saveConfigButtonAction:(UIButton *)btn {
+    if ([self.delegate respondsToSelector:@selector(saveConfigBtnAction:)]) {
+        [self.delegate saveConfigBtnAction:btn];
     }
 }
 
