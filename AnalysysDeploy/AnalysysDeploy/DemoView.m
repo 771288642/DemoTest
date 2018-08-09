@@ -311,6 +311,7 @@
 #pragma mark *** btn aciton ***
 
 - (void)protocolBtnAction:(UIButton *)btn {
+    [self endEditing:YES];
     NSArray *listArray;
     switch (btn.tag) {
         case 100:
@@ -332,6 +333,7 @@
 }
 
 - (void)portBtnAction:(UIButton *)btn {
+    [self endEditing:YES];
     NSArray *listArray;
     switch (btn.tag) {
         case 200:
