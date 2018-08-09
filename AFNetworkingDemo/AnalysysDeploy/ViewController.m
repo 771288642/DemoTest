@@ -202,6 +202,9 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     //  必须使用 EGAppKey 存储本地，SDK使用ß®
     [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
     
+    self.demoView.showUpAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.uploadBtn.titleLabel.text ?: @"",self.demoView.uploadAddressTF.text,self.demoView.uploadPortTF.text];
+    
+    [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
     [self showAlert:@"成功保存App Key ！"];
     
     [self.view endEditing:YES];
