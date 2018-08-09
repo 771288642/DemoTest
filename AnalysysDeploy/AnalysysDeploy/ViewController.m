@@ -210,6 +210,41 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     [self.view endEditing:YES];
 }
 
+/** 保存socket信息 */
+- (void)saveSocketButtonAction {
+    if (self.demoView.socketAddressTF.text.length == 0 ||
+        self.demoView.socketPortTF.text.length == 0) {
+        [self showAlert:@"socket设置异常"];
+        return;
+    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
+    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
+    sdkConfigDic[APP_KEY] = configInfo[APP_KEY];
+    
+    sdkConfigDic[UP_PROTOCOL] = configInfo[UP_PROTOCOL];
+    sdkConfigDic[UP_ADDRESS] = configInfo[UP_ADDRESS];
+    sdkConfigDic[UP_PORT] = configInfo[UP_PORT];
+    
+    sdkConfigDic[WS_PROTOCOL] = self.demoView.socketBtn.titleLabel.text;
+    sdkConfigDic[WS_ADDRESS] = self.demoView.socketAddressTF.text;
+    sdkConfigDic[WS_PORT] = self.demoView.socketPortTF.text;
+    
+    sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
+    sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
+    sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
+    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
+    //  必须使用 EGAppKey 存储本地，SDK使用ß®
+    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
+    
+    self.demoView.showSocketAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.socketBtn.titleLabel.text ?: @"",self.demoView.socketAddressTF.text,self.demoView.socketPortTF.text];
+    
+    [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
+    [self showAlert:@"成功保存socket ！"];
+    
+    [self.view endEditing:YES];
+}
+
 /** 保存配置信息 */
 - (void)saveButtonAction {
 
@@ -307,6 +342,10 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 - (void)saveUploadBtnAction:(UIButton *)btn {
     [self saveUploadButtonAction];
+}
+
+- (void)saveSocketBtnAction:(UIButton *)btn {
+    [self saveSocketButtonAction];
 }
 
 - (void)saveBtnAction:(UIButton *)btn {

@@ -48,8 +48,6 @@
         underLine1.backgroundColor = UIColor.grayColor;
         [self.appKeyText addSubview:underLine1];
         
-        
-        
         //第二行upload
         UILabel *uploadLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, appKeyLabel.top + 35, 60, 30)];
         uploadLabel.textColor = UIColor.grayColor;
@@ -126,23 +124,27 @@
         [self.socketBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.socketBtn];
         
-        UILabel *colonLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(self.width - 85, socketLabel.top, 5, 30)];
-        colonLabel2.textColor = UIColor.grayColor;
-        colonLabel2.text = @":";
-        [self addSubview:colonLabel2];
+        self.saveSocketButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 100, socketLabel.top, 100, 30)];
+        [self.saveSocketButton addTarget:self action:@selector(saveSocketButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.saveSocketButton.layer.borderWidth = 2;
+        [self.saveSocketButton.layer setCornerRadius:5];
+        self.saveSocketButton.layer.masksToBounds = YES;
+        [self.saveSocketButton.layer setBorderColor:[UIColor grayColor].CGColor];
+        [self.saveSocketButton setTitle:@"保存socket" forState:UIControlStateNormal];
+        self.saveSocketButton.titleLabel.font = [UIFont systemFontOfSize: 14];
+        [self.saveSocketButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self addSubview:self.saveSocketButton];
         
-        self.socketAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, socketLabel.top, colonLabel2.left - 125, socketLabel.height)];
-        self.socketAddressTF.placeholder = @"arkpaastest.analysys.cn";
-        self.socketAddressTF.font = [UIFont systemFontOfSize:15];
-        self.socketAddressTF.delegate = self;
-        self.socketAddressTF.clearButtonMode = UITextFieldViewModeAlways;
-        self.socketAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        UIView *underLine4 = [[UIView alloc] initWithFrame:CGRectMake(0, self.socketAddressTF.height - 2, self.socketAddressTF.width, 2)];
-        underLine4.backgroundColor = UIColor.grayColor;
-        [self addSubview:self.socketAddressTF];
-        [self.socketAddressTF addSubview:underLine4];
+        UIButton *socketPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        socketPortBtn.tag = 201;
+        socketPortBtn.frame = CGRectMake(self.saveSocketButton.left - 40, socketLabel.top, 40, 30);
+        [socketPortBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
+        [socketPortBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        //        httpBtn.backgroundColor = [UIColor redColor];
+        [socketPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:socketPortBtn];
         
-        self.socketPortTF = [[UITextField alloc] initWithFrame:CGRectMake(colonLabel2.left + 7, colonLabel2.top, 45, 30)];
+        self.socketPortTF = [[UITextField alloc] initWithFrame:CGRectMake(socketPortBtn.left - 45, socketLabel.top, 45, 30)];
         self.socketPortTF.placeholder = @"9091";
         self.socketPortTF.font = [UIFont systemFontOfSize:15];
         self.socketPortTF.delegate = self;
@@ -152,15 +154,21 @@
         [self addSubview:self.socketPortTF];
         [self.socketPortTF addSubview:underLine5];
         
-        UIButton *socketPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        socketPortBtn.tag = 201;
-        socketPortBtn.frame = CGRectMake(self.right - 40, socketLabel.top, 40, 30);
-        [socketPortBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
-        [socketPortBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        //        httpBtn.backgroundColor = [UIColor redColor];
-        [socketPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:socketPortBtn];
+        UILabel *colonLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(self.socketPortTF.left - 7, socketLabel.top, 5, 30)];
+        colonLabel2.textColor = UIColor.grayColor;
+        colonLabel2.text = @":";
+        [self addSubview:colonLabel2];
         
+        self.socketAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, socketLabel.top, colonLabel2.left - 127, socketLabel.height)];
+        self.socketAddressTF.placeholder = @"arkpaastest.analysys.cn";
+        self.socketAddressTF.font = [UIFont systemFontOfSize:15];
+        self.socketAddressTF.delegate = self;
+        self.socketAddressTF.clearButtonMode = UITextFieldViewModeAlways;
+        self.socketAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        UIView *underLine4 = [[UIView alloc] initWithFrame:CGRectMake(0, self.socketAddressTF.height - 2, self.socketAddressTF.width, 2)];
+        underLine4.backgroundColor = UIColor.grayColor;
+        [self addSubview:self.socketAddressTF];
+        [self.socketAddressTF addSubview:underLine4];
         
         //第四行config
         UILabel *configLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, socketLabel.top + 35, 60, 30)];
@@ -360,7 +368,14 @@
     }
 }
 
-/** 保存配置 */
+/** 保存upload */
+- (void)saveSocketButtonAction:(UIButton *)btn {
+    if ([self.delegate respondsToSelector:@selector(saveSocketBtnAction:)]) {
+        [self.delegate saveSocketBtnAction:btn];
+    }
+}
+
+/** 保存全部 */
 - (void)saveButtonAction:(UIButton *)btn {
     if ([self.delegate respondsToSelector:@selector(saveBtnAction:)]) {
         [self.delegate saveBtnAction:btn];
