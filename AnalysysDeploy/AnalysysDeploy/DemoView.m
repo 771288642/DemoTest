@@ -409,7 +409,6 @@
     }
 }
 
-
 #pragma mark - 隐藏键盘
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -428,10 +427,9 @@
     return YES;
 }
 
-
 #pragma mark - 触摸屏幕时触发
 
--(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self endEditing:YES];
 }
 

@@ -11,6 +11,7 @@
 #import <AnalysysAgent/AnalysysAgent.h>
 #import "UIView+Addition.h"
 #import "ListView.h"
+#import "Model.h"
 
 #define isPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
@@ -35,6 +36,7 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 //  承载视图
 @property (nonatomic, strong) DemoView *demoView;
+@property (nonatomic, strong) NSString *path;
 
 @end
 
@@ -43,6 +45,7 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"modelfile"];
     
     //注册通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"uploadingMsgNotification" object:nil];
@@ -68,8 +71,9 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
     if (isPhoneX) {
         self.demoView.height -= 34;
     }
-    
+
     [self loadLocalDataupdateUI];
+    
 }
 
 
@@ -94,50 +98,35 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
  读取本地数据更新UI
  */
 - (void)loadLocalDataupdateUI {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
-    
     //  本地是否存有数据
-    if (configInfo) {
-        self.demoView.appKeyText.text = configInfo[APP_KEY];
-        
-        [self.demoView.uploadBtn setTitle:configInfo[UP_PROTOCOL] ?: @"http://" forState:UIControlStateNormal] ;
-        self.demoView.uploadAddressTF.text = configInfo[UP_ADDRESS];
-        self.demoView.uploadPortTF.text = configInfo[UP_PORT];
-        
-        [self.demoView.socketBtn setTitle:configInfo[WS_PROTOCOL] ?: @"ws://" forState:UIControlStateNormal];
-        self.demoView.socketAddressTF.text = configInfo[WS_ADDRESS];
-        self.demoView.socketPortTF.text = configInfo[WS_PORT];
-        
-        [self.demoView.configBtn setTitle:configInfo[CONFIG_PROTOCOL] ?: @"http://" forState:UIControlStateNormal];
-        self.demoView.configAddressTF.text = configInfo[CONFIG_ADDRESS];
-        self.demoView.configPortTF.text = configInfo[CONFIG_PORT];
-        
+    [self filing];
+    NSData *data = [[NSData alloc] initWithContentsOfFile:self.path];
+    if (data.bytes > 0) {
+        [self.demoView.uploadBtn setTitle:self.demoView.uploadBtn.titleLabel.text ?: @"http://" forState:UIControlStateNormal];
+        [self.demoView.socketBtn setTitle:self.demoView.socketBtn.titleLabel.text ?: @"ws://" forState:UIControlStateNormal];
+        [self.demoView.configBtn setTitle:self.demoView.configBtn.titleLabel.text ?: @"http://" forState:UIControlStateNormal];
         
         //  修改SDK地址信息
         [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
         [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
         [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
-        
     } else {
         //  使用默认配置信息
         self.demoView.appKeyText.text = @"paastest";
-        
+
         [self.demoView.uploadBtn setTitle:@"https://" forState:UIControlStateNormal] ;
         self.demoView.uploadAddressTF.text = @"arkpaastest.analysys.cn";
         self.demoView.uploadPortTF.text = @"4089";
-        
+
         [self.demoView.socketBtn setTitle:@"wss://" forState:UIControlStateNormal];
         self.demoView.socketAddressTF.text = @"arkpaastest.analysys.cn";
         self.demoView.socketPortTF.text = @"4091";
-        
+
         [self.demoView.configBtn setTitle:@"https://" forState:UIControlStateNormal];
         self.demoView.configAddressTF.text = @"arkpaastest.analysys.cn";
         self.demoView.configPortTF.text = @"4089";
-        
-        [self saveConfigInfo];
+        [self file];
     }
-
     [self updateShowView];
 }
 
@@ -146,143 +135,98 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 /** 保存App Key信息 */
 - (void)saveAppKeyButtonAction {
+    [self.view endEditing:YES];
+    
     if (self.demoView.appKeyText.text.length == 0) {
         [self showAlert:@"app key设置异常"];
         return;
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
-     NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
-    sdkConfigDic[APP_KEY] = self.demoView.appKeyText.text;
     
-    sdkConfigDic[UP_PROTOCOL] = configInfo[UP_PROTOCOL];
-    sdkConfigDic[UP_ADDRESS] = configInfo[UP_ADDRESS];
-    sdkConfigDic[UP_PORT] = configInfo[UP_PORT];
-
-    sdkConfigDic[WS_PROTOCOL] = configInfo[WS_PROTOCOL];
-    sdkConfigDic[WS_ADDRESS] = configInfo[WS_ADDRESS];
-    sdkConfigDic[WS_PORT] = configInfo[WS_PORT];
-
-    sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
-    sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
-    sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
-    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
-    //  必须使用 EGAppKey 存储本地，SDK使用ß®
-    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
+    Model *model = [[Model alloc] init];
+    model.appKey = self.demoView.appKeyText.text;
+    [self filing];
+    self.demoView.appKeyText.text = model.appKey;
+    [self file];
     
     [self showAlert:@"成功保存App Key ！"];
-
-    [self.view endEditing:YES];
 }
 
 /** 保存upload信息 */
 - (void)saveUploadButtonAction {
+    [self.view endEditing:YES];
+    
     if (self.demoView.uploadAddressTF.text.length == 0 ||
         self.demoView.uploadPortTF.text.length == 0) {
         [self showAlert:@"upload设置异常"];
         return;
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
-    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
-    sdkConfigDic[APP_KEY] = configInfo[APP_KEY];
     
-    sdkConfigDic[UP_PROTOCOL] = self.demoView.uploadBtn.titleLabel.text;
-    sdkConfigDic[UP_ADDRESS] = self.demoView.uploadAddressTF.text;
-    sdkConfigDic[UP_PORT] = self.demoView.uploadPortTF.text;
-    
-    sdkConfigDic[WS_PROTOCOL] = configInfo[WS_PROTOCOL];
-    sdkConfigDic[WS_ADDRESS] = configInfo[WS_ADDRESS];
-    sdkConfigDic[WS_PORT] = configInfo[WS_PORT];
-    
-    sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
-    sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
-    sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
-    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
-    //  必须使用 EGAppKey 存储本地，SDK使用ß®
-    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
-    
-    self.demoView.showUpAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.uploadBtn.titleLabel.text ?: @"",self.demoView.uploadAddressTF.text,self.demoView.uploadPortTF.text];
-    self.demoView.dataText.text = @"";
+    Model *model = [[Model alloc] init];
+    model.uploadProtocol = self.demoView.uploadBtn.titleLabel.text;
+    model.uploadAddress = self.demoView.uploadAddressTF.text;
+    model.uploadPort = self.demoView.uploadPortTF.text;
+    [self filing];
+    [self.demoView.uploadBtn setTitle:model.uploadProtocol forState:UIControlStateNormal];
+    self.demoView.uploadAddressTF.text = model.uploadAddress;
+    self.demoView.uploadPortTF.text = model.uploadPort;
+    [self file];
+    [self updateShowView];
     
     [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
     [self showAlert:@"成功保存upload ！"];
     
-    [self.view endEditing:YES];
 }
 
 /** 保存socket信息 */
 - (void)saveSocketButtonAction {
+    [self.view endEditing:YES];
+    
     if (self.demoView.socketAddressTF.text.length == 0 ||
         self.demoView.socketPortTF.text.length == 0) {
         [self showAlert:@"socket设置异常"];
         return;
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
-    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
-    sdkConfigDic[APP_KEY] = configInfo[APP_KEY];
     
-    sdkConfigDic[UP_PROTOCOL] = configInfo[UP_PROTOCOL];
-    sdkConfigDic[UP_ADDRESS] = configInfo[UP_ADDRESS];
-    sdkConfigDic[UP_PORT] = configInfo[UP_PORT];
-    
-    sdkConfigDic[WS_PROTOCOL] = self.demoView.socketBtn.titleLabel.text;
-    sdkConfigDic[WS_ADDRESS] = self.demoView.socketAddressTF.text;
-    sdkConfigDic[WS_PORT] = self.demoView.socketPortTF.text;
-    
-    sdkConfigDic[CONFIG_PROTOCOL] = configInfo[CONFIG_PROTOCOL];
-    sdkConfigDic[CONFIG_ADDRESS] = configInfo[CONFIG_ADDRESS];
-    sdkConfigDic[CONFIG_PORT] = configInfo[CONFIG_PORT];
-    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
-    //  必须使用 EGAppKey 存储本地，SDK使用ß®
-    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
-    
-    self.demoView.showSocketAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.socketBtn.titleLabel.text ?: @"",self.demoView.socketAddressTF.text,self.demoView.socketPortTF.text];
-    self.demoView.dataText.text = @"";
+    Model *model = [[Model alloc] init];
+    model.socketProtocol = self.demoView.socketBtn.titleLabel.text;
+    model.socketAddress = self.demoView.socketAddressTF.text;
+    model.socketPort = self.demoView.socketPortTF.text;
+    [self filing];
+    [self.demoView.socketBtn setTitle:model.socketProtocol forState:UIControlStateNormal];
+    self.demoView.socketAddressTF.text = model.socketAddress;
+    self.demoView.socketPortTF.text = model.socketPort;
+    [self file];
+    [self updateShowView];
     
     [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
     [self showAlert:@"成功保存socket ！"];
-    
-    [self.view endEditing:YES];
 }
 
 /** 保存config信息 */
 - (void)saveConfigButtonAction {
+    [self.view endEditing:YES];
+    
     if (self.demoView.socketAddressTF.text.length == 0 ||
         self.demoView.socketPortTF.text.length == 0) {
         [self showAlert:@"socket设置异常"];
         return;
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary *configInfo = [defaults objectForKey:SETTING_KEY];
-    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
-    sdkConfigDic[APP_KEY] = configInfo[APP_KEY];
     
-    sdkConfigDic[UP_PROTOCOL] = configInfo[UP_PROTOCOL];
-    sdkConfigDic[UP_ADDRESS] = configInfo[UP_ADDRESS];
-    sdkConfigDic[UP_PORT] = configInfo[UP_PORT];
-    
-    sdkConfigDic[WS_PROTOCOL] = configInfo[WS_PROTOCOL];
-    sdkConfigDic[WS_ADDRESS] = configInfo[WS_ADDRESS];
-    sdkConfigDic[WS_PORT] = configInfo[WS_PORT];
-    
-    sdkConfigDic[CONFIG_PROTOCOL] = self.demoView.configBtn.titleLabel.text;
-    sdkConfigDic[CONFIG_ADDRESS] = self.demoView.configAddressTF.text;
-    sdkConfigDic[CONFIG_PORT] = self.demoView.configPortTF.text;
-    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
-    //  必须使用 EGAppKey 存储本地，SDK使用ß®
-    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
-    
-    self.demoView.showConfigAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.configBtn.titleLabel.text ?: @"",self.demoView.configAddressTF.text,self.demoView.configPortTF.text];
-    self.demoView.dataText.text = @"";
+    Model *model = [[Model alloc] init];
+    model.configProtocol = self.demoView.configBtn.titleLabel.text;
+    model.configAddress = self.demoView.configAddressTF.text;
+    model.configPort = self.demoView.configPortTF.text;
+    [self filing];
+    [self.demoView.configBtn setTitle:model.configProtocol forState:UIControlStateNormal];
+    self.demoView.configAddressTF.text = model.configAddress;
+    self.demoView.configPortTF.text = model.configPort;
+    [self file];
+    [self updateShowView];
     
     [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
     [self showAlert:@"成功保存config ！"];
     
-    [self.view endEditing:YES];
 }
-
 
 /** 保存配置信息 */
 - (void)saveButtonAction {
@@ -307,49 +251,16 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
         [self showAlert:@"config设置异常"];
         return;
     }
-    
     //  保存本地数据
-    if ([self saveConfigInfo]) {
-        
-        [self updateShowView];
-        
-        //  修改SDK地址信息
-        [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
-        [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
-        [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
-        
-        [self showAlert:@"全部保存成功！"];
-    } else {
-        NSLog(@"数据存储失败!!!!!");
-    }
+    [self file];
+    [self updateShowView];
+    //  修改SDK地址信息
+    [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
+    [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
+    [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
     
+    [self showAlert:@"全部保存成功！"];
     [self.view endEditing:YES];
-}
-
-/** 保存本地信息 */
-- (BOOL)saveConfigInfo {
-    NSMutableDictionary *sdkConfigDic = [NSMutableDictionary dictionary];
-    
-    sdkConfigDic[APP_KEY] = self.demoView.appKeyText.text;
-    
-    sdkConfigDic[UP_PROTOCOL] = self.demoView.uploadBtn.titleLabel.text;
-    sdkConfigDic[UP_ADDRESS] = self.demoView.uploadAddressTF.text;
-    sdkConfigDic[UP_PORT] = self.demoView.uploadPortTF.text;
-    
-    sdkConfigDic[WS_PROTOCOL] = self.demoView.socketBtn.titleLabel.text;
-    sdkConfigDic[WS_ADDRESS] = self.demoView.socketAddressTF.text;
-    sdkConfigDic[WS_PORT] = self.demoView.socketPortTF.text;
-    
-    sdkConfigDic[CONFIG_PROTOCOL] = self.demoView.configBtn.titleLabel.text;
-    sdkConfigDic[CONFIG_ADDRESS] = self.demoView.configAddressTF.text;
-    sdkConfigDic[CONFIG_PORT] = self.demoView.configPortTF.text;
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:sdkConfigDic forKey:SETTING_KEY];
-    //  必须使用 EGAppKey 存储本地，SDK使用
-    [defaults setObject:self.demoView.appKeyText.text forKey:@"EGAppKey"];
-    
-    return [defaults synchronize];
 }
 
 /** 刷新页面展示地址视图 */
@@ -417,8 +328,57 @@ static NSString *const CONFIG_PORT = @"configPort";  //  config端口
 
 #pragma mark - 触摸屏幕时触发
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
 }
+
+#pragma mark - 归档
+
+- (void)file {
+    Model *model = [[Model alloc] init];
+    model.appKey = self.demoView.appKeyText.text;
+    
+    model.uploadProtocol = self.demoView.uploadBtn.titleLabel.text;
+    model.uploadAddress = self.demoView.uploadAddressTF.text;
+    model.uploadPort = self.demoView.uploadPortTF.text;
+    
+    model.socketProtocol = self.demoView.socketBtn.titleLabel.text;
+    model.socketAddress = self.demoView.socketAddressTF.text;
+    model.socketPort = self.demoView.socketPortTF.text;
+    
+    model.configProtocol = self.demoView.configBtn.titleLabel.text;
+    model.configAddress = self.demoView.configAddressTF.text;
+    model.configPort = self.demoView.configPortTF.text;
+    
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    [archiver encodeObject:model forKey:@"model"];
+    [archiver finishEncoding];
+    [data writeToFile:self.path atomically:YES];
+}
+
+#pragma mark - 接档
+
+- (void)filing {
+    NSData *data = [[NSData alloc] initWithContentsOfFile:self.path];
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+    Model *model = [unarchiver decodeObjectForKey:@"model"];
+    [unarchiver finishDecoding];
+    self.demoView.appKeyText.text = model.appKey;
+    
+    [self.demoView.uploadBtn setTitle:model.uploadProtocol forState:UIControlStateNormal];
+    self.demoView.uploadAddressTF.text = model.uploadAddress;
+    self.demoView.uploadPortTF.text = model.uploadPort;
+    
+    [self.demoView.socketBtn setTitle:model.socketProtocol forState:UIControlStateNormal];
+    self.demoView.socketAddressTF.text = model.socketAddress;
+    self.demoView.socketPortTF.text = model.socketPort;
+    
+    [self.demoView.configBtn setTitle:model.configProtocol forState:UIControlStateNormal];
+    self.demoView.configAddressTF.text = model.configAddress;
+    self.demoView.configPortTF.text = model.configPort;
+}
+
+
 
 @end

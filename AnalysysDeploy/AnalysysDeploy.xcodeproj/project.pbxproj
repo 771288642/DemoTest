@@ -19,6 +19,7 @@
 		2D09B7C32112CF2F0068B080 /* UIView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D09B7C22112CF2F0068B080 /* UIView+Addition.m */; };
 		2D09B7D02114369C0068B080 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D09B7CF2114369B0068B080 /* libicucore.tbd */; };
 		2D09B7D421146B5E0068B080 /* AnalysysAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D09B7D321146B5E0068B080 /* AnalysysAgent.framework */; };
+		2DE810F7211C2155005CFB63 /* Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DE810F6211C2155005CFB63 /* Model.m */; };
 		E86E81BB2118793900ACC084 /* ListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E86E81B92118793900ACC084 /* ListTableViewCell.m */; };
 		E86E81BC2118793900ACC084 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E86E81BA2118793900ACC084 /* ListTableViewCell.xib */; };
 		E86E81BF2119456600ACC084 /* ListView.m in Sources */ = {isa = PBXBuildFile; fileRef = E86E81BE2119456600ACC084 /* ListView.m */; };
@@ -69,6 +70,8 @@
 		2D09B7C22112CF2F0068B080 /* UIView+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Addition.m"; sourceTree = "<group>"; };
 		2D09B7CF2114369B0068B080 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		2D09B7D321146B5E0068B080 /* AnalysysAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AnalysysAgent.framework; sourceTree = "<group>"; };
+		2DE810F5211C2155005CFB63 /* Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		2DE810F6211C2155005CFB63 /* Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Model.m; sourceTree = "<group>"; };
 		E86E81B82118793900ACC084 /* ListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListTableViewCell.h; sourceTree = "<group>"; };
 		E86E81B92118793900ACC084 /* ListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListTableViewCell.m; sourceTree = "<group>"; };
 		E86E81BA2118793900ACC084 /* ListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
@@ -159,6 +162,8 @@
 				E86E81B82118793900ACC084 /* ListTableViewCell.h */,
 				E86E81B92118793900ACC084 /* ListTableViewCell.m */,
 				E86E81BA2118793900ACC084 /* ListTableViewCell.xib */,
+				2DE810F5211C2155005CFB63 /* Model.h */,
+				2DE810F6211C2155005CFB63 /* Model.m */,
 			);
 			path = AnalysysDeploy;
 			sourceTree = "<group>";
@@ -315,6 +320,7 @@
 				2D09B7C32112CF2F0068B080 /* UIView+Addition.m in Sources */,
 				2D09B7C021119A240068B080 /* DemoView.m in Sources */,
 				E86E81BF2119456600ACC084 /* ListView.m in Sources */,
+				2DE810F7211C2155005CFB63 /* Model.m in Sources */,
 				2D09B784210ED5530068B080 /* ViewController.m in Sources */,
 				E86E81BB2118793900ACC084 /* ListTableViewCell.m in Sources */,
 				2D09B78F210ED55B0068B080 /* main.m in Sources */,
