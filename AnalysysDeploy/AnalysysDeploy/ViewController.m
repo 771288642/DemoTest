@@ -15,23 +15,6 @@
 
 #define isPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
-static NSString *const SETTING_KEY = @"settingKey";  //  获取本地数据的key
-
-static NSString *const APP_KEY = @"appKey";  //  appkey
-
-static NSString *const UP_PROTOCOL = @"upProtocol";  //  up协议
-static NSString *const UP_ADDRESS = @"upAddress";  //  up地址
-static NSString *const UP_PORT = @"upPort";  //  up端口
-
-static NSString *const WS_PROTOCOL = @"wsProtocol";  //  ws协议
-static NSString *const WS_ADDRESS = @"wsAddress";  //  ws地址
-static NSString *const WS_PORT = @"wsPort";  //  ws端口
-
-static NSString *const CONFIG_PROTOCOL = @"configProtocol";  //  config协议
-static NSString *const CONFIG_ADDRESS = @"configAddress";  //  config地址
-static NSString *const CONFIG_PORT = @"configPort";  //  config端口
-
-
 @interface ViewController ()<DemoViewProtocol>
 
 //  承载视图
