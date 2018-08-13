@@ -189,9 +189,9 @@
 - (void)saveConfigButtonAction {
     [self.view endEditing:YES];
     
-    if (self.demoView.socketAddressTF.text.length == 0 ||
-        self.demoView.socketPortTF.text.length == 0) {
-        [self showAlert:@"socket设置异常"];
+    if (self.demoView.configAddressTF.text.length == 0 ||
+        self.demoView.configPortTF.text.length == 0) {
+        [self showAlert:@"config设置异常"];
         return;
     }
     
@@ -296,8 +296,16 @@
 #pragma mark - 弹窗提示
 
 - (void)showAlert:(NSString *)_message {
-    UIAlertView *promptAlert = [[UIAlertView alloc] initWithTitle:@"提示:" message:_message delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-    [promptAlert show];
+    NSString *version = [UIDevice currentDevice].systemVersion;
+    if (version.doubleValue >= 9.0) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示:" message:_message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *OKAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:OKAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        UIAlertView *promptAlert = [[UIAlertView alloc] initWithTitle:@"提示:" message:_message delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [promptAlert show];
+    }
 }
 
 #pragma mark - 接收通知
