@@ -37,5 +37,7 @@
 @property (nonatomic, strong) UITextView *showUpAddressTV, *showSocketAddressTV, *showConfigAddressTV;
 @property (nonatomic, strong) UITextView *dataText;
 
+@property (nonatomic, strong) UITextField *currentText;
+
 
 @end

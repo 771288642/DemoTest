@@ -433,20 +433,14 @@
     [self endEditing:YES];
 }
 
-#pragma mark - 键盘弹起不遮挡text
+#pragma mark - 当前点击的text
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    CGPoint point = [textField convertPoint:CGPointMake(0, 0) toView:self];
-    CGFloat offset = (self.height -10 - 216) - point.y;
-    if (offset < 0) {
-        [self setContentOffset:CGPointMake(0, -offset) animated:YES];
-    }
+    self.currentText = textField;
 }
 
-#pragma mark - 键盘消失，视图恢复
-
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [self setContentOffset:CGPointMake(0, 0) animated:YES];
+    self.currentText = nil;
 }
 
 /*

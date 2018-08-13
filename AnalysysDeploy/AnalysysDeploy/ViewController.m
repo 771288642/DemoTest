@@ -20,6 +20,7 @@
 //  承载视图
 @property (nonatomic, strong) DemoView *demoView;
 @property (nonatomic, strong) NSString *path;
+@property (nonatomic, assign) BOOL keyboardIsShown;
 
 @end
 
@@ -36,6 +37,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"uploadMsgFailedsNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"reUploadMsgNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveSDKNotification:) name:@"NoNetWorkNotification" object:nil];
+    //注册键盘出现与隐藏通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
 //    self.view.backgroundColor = [UIColor greenColor];
     
@@ -73,6 +77,8 @@
 -(void)dealloc {
     //  移除通知
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
 #pragma mark *** UI ***
@@ -370,6 +376,38 @@
     self.demoView.configPortTF.text = model.configPort;
 }
 
+#pragma mark - 接收键盘通知
 
+//键盘弹出不遮挡text
+- (void)keyboardDidShow:(NSNotification *)notif {
+    if (self.keyboardIsShown) {
+        return;
+    }
+    NSDictionary *info = notif.userInfo;
+    NSValue *aValue = [info objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [aValue CGRectValue].size;
+    
+    CGRect viewFrame = self.demoView.frame;
+    viewFrame.size.height -= keyboardSize.height;
+    self.demoView.frame = viewFrame;
+    CGRect textFieldRect = [self.demoView.currentText frame];
+    [self.demoView scrollRectToVisible:textFieldRect animated:YES];
+    self.keyboardIsShown = YES;
+}
+
+//键盘隐藏还原view
+- (void)keyboardDidHide:(NSNotification *)notif {
+    NSDictionary *info = notif.userInfo;
+    NSValue *aValue = [info objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [aValue CGRectValue].size;
+
+    CGRect viewFrame = self.demoView.frame;
+    viewFrame.size.height += keyboardSize.height;
+    self.demoView.frame = viewFrame;
+    if (!self.keyboardIsShown) {
+        return;
+    }
+    self.keyboardIsShown = NO;
+}
 
 @end
