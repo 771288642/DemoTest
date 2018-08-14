@@ -87,7 +87,6 @@
         self.uploadPortTF.placeholder = @"8089";
         self.uploadPortTF.font = [UIFont systemFontOfSize:15];
         self.uploadPortTF.delegate = self;
-        //self.noText1.clearButtonMode = UITextFieldViewModeAlways;
         UIView *underLine3 = [[UIView alloc] initWithFrame:CGRectMake(0, self.uploadPortTF.height - 2, self.uploadPortTF.width, 2)];
         underLine3.backgroundColor = UIColor.grayColor;
         [self.uploadPortTF addSubview:underLine3];
@@ -148,7 +147,6 @@
         self.socketPortTF.placeholder = @"9091";
         self.socketPortTF.font = [UIFont systemFontOfSize:15];
         self.socketPortTF.delegate = self;
-        //self.noText2.clearButtonMode = UITextFieldViewModeAlways;
         UIView *underLine5 = [[UIView alloc] initWithFrame:CGRectMake(0, self.socketPortTF.height - 2, self.socketPortTF.width, 2)];
         underLine5.backgroundColor = UIColor.grayColor;
         [self addSubview:self.socketPortTF];
@@ -209,7 +207,6 @@
         self.configPortTF.placeholder = @"8089";
         self.configPortTF.font = [UIFont systemFontOfSize:15];
         self.configPortTF.delegate = self;
-        //self.noText3.clearButtonMode = UITextFieldViewModeAlways;
         UIView *underLine7 = [[UIView alloc] initWithFrame:CGRectMake(0, self.configPortTF.height - 2, self.configPortTF.width, 2)];
         underLine7.backgroundColor = UIColor.grayColor;
         [self addSubview:self.configPortTF];

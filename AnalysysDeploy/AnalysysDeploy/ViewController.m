@@ -49,16 +49,16 @@
     CGFloat margin = 5;
     
     //  初始化底层视图
-    self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
+    if (isPhoneX) {
+        self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin + 44, topViewHeight + margin, self.view.width - margin*4 - 44, self.view.height - topViewHeight - margin*2 - 34)];
+    } else {
+        self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
+    }
+    
     self.demoView.delegate = self;
     self.demoView.contentSize = CGSizeMake(self.demoView.width, self.demoView.height + 350);
 //    self.demoView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.demoView];
-    
-    if (isPhoneX) {
-        self.demoView.height -= 34;
-    }
-
     [self loadLocalDataupdateUI];
     
 }
