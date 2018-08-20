@@ -36,6 +36,8 @@
 @property (nonatomic, strong) UIButton *saveButton, *sendDataButton;
 @property (nonatomic, strong) UITextView *showUpAddressTV, *showSocketAddressTV, *showConfigAddressTV;
 @property (nonatomic, strong) UITextView *dataText;
+@property (nonatomic, strong) UIButton *portBtn, *socketPortBtn, *configPortBtn;
+@property (nonatomic, strong) UILabel *uploadColon, *socketColon, *configColon;
 
 @property (nonatomic, strong) UITextField *currentText;
 

@@ -12,6 +12,7 @@
 #import "UIView+Addition.h"
 #import "ListView.h"
 #import "Model.h"
+#import "SDAutoLayout.h"
 
 #define isPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
@@ -40,6 +41,8 @@
     //注册键盘出现与隐藏通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    //注册横竖屏通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRotate:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
     
 //    self.view.backgroundColor = [UIColor greenColor];
     
@@ -56,7 +59,7 @@
     }
     
     self.demoView.delegate = self;
-    self.demoView.contentSize = CGSizeMake(self.demoView.width, self.demoView.height + 350);
+    self.demoView.contentSize = CGSizeMake(self.view.width - margin*2, self.demoView.height + 350);
 //    self.demoView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.demoView];
     [self loadLocalDataupdateUI];
@@ -408,6 +411,113 @@
         return;
     }
     self.keyboardIsShown = NO;
+}
+
+#pragma mark - 接收横竖屏通知
+
+- (void)changeRotate:(NSNotification*)noti {
+    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait
+        || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown) {
+        //竖屏
+        [self autoLayout];
+        self.demoView.contentSize = CGSizeMake(self.view.width - 10, self.demoView.height + 350);
+        
+    } else {
+        //横屏
+        [self autoLayout];
+    }
+}
+
+- (void)autoLayout {
+    self.demoView.sd_layout
+    .leftSpaceToView(self.view, 5)
+    .rightSpaceToView(self.view, 5)
+    .topSpaceToView(self.view, 50)
+    .bottomSpaceToView(self.view, 5);
+    
+    //app key
+    self.demoView.saveAppKeyButton.sd_layout
+    .rightSpaceToView(self.demoView, 0)
+    .topSpaceToView(self.demoView, 0)
+    .widthIs((self.view.width - 10)/4);
+    
+    self.demoView.appKeyText.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveAppKeyButton.width + 5);
+    
+    //upload
+    self.demoView.saveUploadButton.sd_layout
+    .rightSpaceToView(self.demoView, 0)
+    .topSpaceToView(self.demoView, self.demoView.saveAppKeyButton.bottom + 5)
+    .widthIs((self.view.width - 10)/5);
+    
+    self.demoView.portBtn.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width)
+    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top)
+    .widthIs(40);
+    
+    self.demoView.uploadPortTF.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width + 40)
+    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top)
+    .widthIs(45);
+    
+    self.demoView.uploadColon.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width + 85)
+    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top)
+    .widthIs(5);
+    
+    self.demoView.uploadAddressTF.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width + 90)
+    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top);
+    
+    //socket
+    self.demoView.saveSocketButton.sd_layout
+    .rightSpaceToView(self.demoView, 0)
+    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.bottom + 5)
+    .widthIs((self.view.width - 10)/5);
+
+    self.demoView.socketPortBtn.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width)
+    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top)
+    .widthIs(40);
+
+    self.demoView.socketPortTF.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width + 40)
+    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top)
+    .widthIs(45);
+
+    self.demoView.socketColon.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width + 85)
+    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top)
+    .widthIs(5);
+
+    self.demoView.socketAddressTF.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width + 90)
+    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top);
+    
+    //config
+    self.demoView.saveConfigButton.sd_layout
+    .rightSpaceToView(self.demoView, 0)
+    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.bottom + 5)
+    .widthIs((self.view.width - 10)/5);
+    
+    self.demoView.configPortBtn.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width)
+    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top)
+    .widthIs(40);
+    
+    self.demoView.configPortTF.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width + 40)
+    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top)
+    .widthIs(45);
+    
+    self.demoView.configColon.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width + 85)
+    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top)
+    .widthIs(5);
+    
+    self.demoView.configAddressTF.sd_layout
+    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width + 90)
+    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top);
 }
 
 @end
