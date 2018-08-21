@@ -21,12 +21,17 @@
     if (self = [super initWithFrame:frame]) {
         
         //第一行app key
-        UILabel *appKeyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 30)];
+        UILabel *appKeyLabel = [[UILabel alloc] init];
         appKeyLabel.textColor = UIColor.grayColor;
         appKeyLabel.text = @"App Key:";
         [self addSubview:appKeyLabel];
+        appKeyLabel.sd_layout
+        .leftSpaceToView(self, 0)
+        .topSpaceToView(self, 7)
+        .widthIs(80)
+        .autoHeightRatio(0);
         
-        self.saveAppKeyButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width * 4 / 5, appKeyLabel.top, self.width / 5, appKeyLabel.height)];
+        self.saveAppKeyButton = [[UIButton alloc] init];
         [self.saveAppKeyButton addTarget:self action:@selector(saveAppKeyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.saveAppKeyButton.layer.borderWidth = 2;
         [self.saveAppKeyButton.layer setCornerRadius:5];
@@ -36,35 +41,58 @@
         self.saveAppKeyButton.titleLabel.font = [UIFont systemFontOfSize: 14];
         [self.saveAppKeyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.saveAppKeyButton];
+        self.saveAppKeyButton.sd_layout
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(self, 0)
+        .widthRatioToView(self, 0.2)
+        .heightIs(30);
         
-        self.appKeyText = [[UITextField alloc] initWithFrame:CGRectMake(appKeyLabel.width, appKeyLabel.top, self.saveAppKeyButton.left - appKeyLabel.right - 10, appKeyLabel.height)];
+        self.appKeyText = [[UITextField alloc] init];
         self.appKeyText.delegate = self;
         self.appKeyText.placeholder = @"paastest";
         self.appKeyText.clearButtonMode = UITextFieldViewModeAlways;
         self.appKeyText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [self addSubview:self.appKeyText];
+        self.appKeyText.sd_layout
+        .leftSpaceToView(appKeyLabel, 0)
+        .rightSpaceToView(self.saveAppKeyButton, 5)
+        .topEqualToView(appKeyLabel)
+        .bottomEqualToView(appKeyLabel);
         
-        UIView *appKeyUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.appKeyText.height - 2, self.appKeyText.width, 2)];
+        UIView *appKeyUnderLine = [[UIView alloc] init];
         appKeyUnderLine.backgroundColor = UIColor.grayColor;
         [self.appKeyText addSubview:appKeyUnderLine];
-        appKeyUnderLine.sd_layout.rightSpaceToView(self.appKeyText, 0);
+        appKeyUnderLine.sd_layout
+        .leftEqualToView(self.appKeyText)
+        .rightEqualToView(self.appKeyText)
+        .bottomSpaceToView(self.appKeyText, -3)
+        .heightIs(2);
         
         //第二行upload
-        UILabel *uploadLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, appKeyLabel.top + 35, 60, 30)];
+        UILabel *uploadLabel = [[UILabel alloc] init];
         uploadLabel.textColor = UIColor.grayColor;
         uploadLabel.text = @"upload";
         [self addSubview:uploadLabel];
+        uploadLabel.sd_layout
+        .leftEqualToView(appKeyLabel)
+        .topSpaceToView(self.saveAppKeyButton, 12)
+        .widthIs(60)
+        .autoHeightRatio(0);
         
         self.uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.uploadBtn.frame = CGRectMake(uploadLabel.right, uploadLabel.top, 60, 30);
         self.uploadBtn.tag = 100;
         [self.uploadBtn setTitle:@"https://" forState:UIControlStateNormal];
         [self.uploadBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        httpBtn.backgroundColor = [UIColor redColor];
         [self.uploadBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.uploadBtn];
+        self.uploadBtn.sd_layout
+        .leftSpaceToView(uploadLabel, 0)
+        .topSpaceToView(self.saveAppKeyButton, 5)
+        .widthIs(60)
+        .heightIs(30);
         
-        self.saveUploadButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width * 4 / 5, uploadLabel.top, self.width/5, 30)];
+        self.saveUploadButton = [[UIButton alloc] init];
         [self.saveUploadButton addTarget:self action:@selector(saveUploadButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.saveUploadButton.layer.borderWidth = 2;
         [self.saveUploadButton.layer setCornerRadius:5];
@@ -74,59 +102,102 @@
         self.saveUploadButton.titleLabel.font = [UIFont systemFontOfSize: 14];
         [self.saveUploadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.saveUploadButton];
+        self.saveUploadButton.sd_layout
+        .rightEqualToView(self.saveAppKeyButton)
+        .topEqualToView(self.uploadBtn)
+        .leftEqualToView(self.saveAppKeyButton)
+        .bottomEqualToView(self.uploadBtn);
         
         self.portBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.portBtn.tag = 200;
-        self.portBtn.frame = CGRectMake(self.saveUploadButton.left - 40, uploadLabel.top, 40, 30);
         [self.portBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
         [self.portBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         //        httpBtn.backgroundColor = [UIColor redColor];
         [self.portBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.portBtn];
+        self.portBtn.sd_layout
+        .topEqualToView(self.saveUploadButton)
+        .rightSpaceToView(self.saveUploadButton, 0)
+        .bottomEqualToView(self.saveUploadButton)
+        .widthIs(40);
         
-        self.uploadPortTF = [[UITextField alloc] initWithFrame:CGRectMake(self.portBtn.left - 45, uploadLabel.top, 45, 30)];
+        self.uploadPortTF = [[UITextField alloc] init];
         self.uploadPortTF.placeholder = @"8089";
         self.uploadPortTF.font = [UIFont systemFontOfSize:15];
         self.uploadPortTF.delegate = self;
-        UIView *uploadPTFUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.uploadPortTF.height - 2, self.uploadPortTF.width, 2)];
+        UIView *uploadPTFUnderLine = [[UIView alloc] init];
         uploadPTFUnderLine.backgroundColor = UIColor.grayColor;
         [self.uploadPortTF addSubview:uploadPTFUnderLine];
         [self addSubview:self.uploadPortTF];
-        uploadPTFUnderLine.sd_layout.rightSpaceToView(self.uploadPortTF, 0);
+        self.uploadPortTF.sd_layout
+        .topEqualToView(uploadLabel)
+        .bottomEqualToView(uploadLabel)
+        .rightSpaceToView(self.portBtn, 0)
+        .widthIs(45);
         
-        self.uploadColon = [[UILabel alloc] initWithFrame:CGRectMake(self.uploadPortTF.left - 7, uploadLabel.top, 5, 30)];
+        uploadPTFUnderLine.sd_layout
+        .leftEqualToView(self.uploadPortTF)
+        .rightEqualToView(self.uploadPortTF)
+        .bottomSpaceToView(self.uploadPortTF, -2)
+        .heightIs(2);
+
+        self.uploadColon = [[UILabel alloc] init];
         self.uploadColon.textColor = UIColor.grayColor;
         self.uploadColon.text = @":";
         [self addSubview:self.uploadColon];
+        self.uploadColon.sd_layout
+        .topEqualToView(uploadLabel)
+        .rightSpaceToView(self.uploadPortTF, 0)
+        .widthIs(5)
+        .autoHeightRatio(0);
 
-        self.uploadAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, uploadLabel.top, self.uploadColon.left - 127, uploadLabel.height)];
+        self.uploadAddressTF = [[UITextField alloc] init];
         self.uploadAddressTF.placeholder = @"arkpaastest.analysys.cn";
         self.uploadAddressTF.font = [UIFont systemFontOfSize:15];
         self.uploadAddressTF.delegate = self;
         self.uploadAddressTF.clearButtonMode = UITextFieldViewModeAlways;
         self.uploadAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        UIView *uploadATFUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.uploadAddressTF.height - 2, self.uploadAddressTF.width, 2)];
+        UIView *uploadATFUnderLine = [[UIView alloc] init];
         uploadATFUnderLine.backgroundColor = UIColor.grayColor;
         [self addSubview:self.uploadAddressTF];
         [self.uploadAddressTF addSubview:uploadATFUnderLine];
-        uploadATFUnderLine.sd_layout.rightSpaceToView(self.uploadAddressTF, 0);
+        self.uploadAddressTF.sd_layout
+        .topEqualToView(uploadLabel)
+        .bottomEqualToView(uploadLabel)
+        .leftSpaceToView(self.uploadBtn, 0)
+        .rightSpaceToView(self.uploadColon, 0);
+        
+        uploadATFUnderLine.sd_layout
+        .leftEqualToView(self.uploadAddressTF)
+        .rightEqualToView(self.uploadAddressTF)
+        .bottomSpaceToView(self.uploadAddressTF, -2)
+        .heightIs(2);
 
         //第三行socket
-        UILabel *socketLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uploadLabel.top + 35, 60, 30)];
+        UILabel *socketLabel = [[UILabel alloc] init];
         socketLabel.textColor = UIColor.grayColor;
         socketLabel.text = @"socket";
         [self addSubview:socketLabel];
-        
+        socketLabel.sd_layout
+        .leftEqualToView(appKeyLabel)
+        .topSpaceToView(self.saveUploadButton, 12)
+        .widthIs(60)
+        .autoHeightRatio(0);
+
         self.socketBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.socketBtn.frame = CGRectMake(socketLabel.right, socketLabel.top, 60, 30);
         self.socketBtn.tag = 101;
         [self.socketBtn setTitle:@"wss://" forState:UIControlStateNormal];
         [self.socketBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         //        httpBtn.backgroundColor = [UIColor redColor];
         [self.socketBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.socketBtn];
-        
-        self.saveSocketButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width * 4 / 5, socketLabel.top, self.width / 5, 30)];
+        self.socketBtn.sd_layout
+        .leftSpaceToView(socketLabel, 0)
+        .topSpaceToView(self.saveUploadButton, 5)
+        .widthIs(60)
+        .heightIs(30);
+
+        self.saveSocketButton = [[UIButton alloc] init];
         [self.saveSocketButton addTarget:self action:@selector(saveSocketButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.saveSocketButton.layer.borderWidth = 2;
         [self.saveSocketButton.layer setCornerRadius:5];
@@ -136,59 +207,102 @@
         self.saveSocketButton.titleLabel.font = [UIFont systemFontOfSize: 14];
         [self.saveSocketButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.saveSocketButton];
-        
+        self.saveSocketButton.sd_layout
+        .rightEqualToView(self.saveUploadButton)
+        .topEqualToView(self.socketBtn)
+        .leftEqualToView(self.saveUploadButton)
+        .bottomEqualToView(self.socketBtn);
+
         self.socketPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.socketPortBtn.tag = 201;
-        self.socketPortBtn.frame = CGRectMake(self.saveSocketButton.left - 40, socketLabel.top, 40, 30);
         [self.socketPortBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
         [self.socketPortBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         //        httpBtn.backgroundColor = [UIColor redColor];
         [self.socketPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.socketPortBtn];
-        
-        self.socketPortTF = [[UITextField alloc] initWithFrame:CGRectMake(self.socketPortBtn.left - 45, socketLabel.top, 45, 30)];
+        self.socketPortBtn.sd_layout
+        .topEqualToView(self.saveSocketButton)
+        .rightSpaceToView(self.saveSocketButton, 0)
+        .bottomEqualToView(self.saveSocketButton)
+        .widthIs(40);
+
+        self.socketPortTF = [[UITextField alloc] init];
         self.socketPortTF.placeholder = @"9091";
         self.socketPortTF.font = [UIFont systemFontOfSize:15];
         self.socketPortTF.delegate = self;
-        UIView *socketPTFUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.socketPortTF.height - 2, self.socketPortTF.width, 2)];
+        UIView *socketPTFUnderLine = [[UIView alloc] init];
         socketPTFUnderLine.backgroundColor = UIColor.grayColor;
         [self addSubview:self.socketPortTF];
         [self.socketPortTF addSubview:socketPTFUnderLine];
-        socketPTFUnderLine.sd_layout.rightSpaceToView(self.socketPortTF, 0);
+        self.socketPortTF.sd_layout
+        .topEqualToView(socketLabel)
+        .bottomEqualToView(socketLabel)
+        .rightSpaceToView(self.socketPortBtn, 0)
+        .widthIs(45);
         
-        self.socketColon = [[UILabel alloc] initWithFrame:CGRectMake(self.socketPortTF.left - 7, socketLabel.top, 5, 30)];
+        socketPTFUnderLine.sd_layout
+        .leftEqualToView(self.socketPortTF)
+        .rightEqualToView(self.socketPortTF)
+        .bottomSpaceToView(self.socketPortTF, -2)
+        .heightIs(2);
+
+        self.socketColon = [[UILabel alloc] init];
         self.socketColon.textColor = UIColor.grayColor;
         self.socketColon.text = @":";
         [self addSubview:self.socketColon];
-        
-        self.socketAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, socketLabel.top, self.socketColon.left - 127, socketLabel.height)];
+        self.socketColon.sd_layout
+        .topEqualToView(socketLabel)
+        .rightSpaceToView(self.socketPortTF, 0)
+        .widthIs(5)
+        .autoHeightRatio(0);
+
+        self.socketAddressTF = [[UITextField alloc] init];
         self.socketAddressTF.placeholder = @"arkpaastest.analysys.cn";
         self.socketAddressTF.font = [UIFont systemFontOfSize:15];
         self.socketAddressTF.delegate = self;
         self.socketAddressTF.clearButtonMode = UITextFieldViewModeAlways;
         self.socketAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        UIView *socketATFUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.socketAddressTF.height - 2, self.socketAddressTF.width, 2)];
+        UIView *socketATFUnderLine = [[UIView alloc] init];
         socketATFUnderLine.backgroundColor = UIColor.grayColor;
         [self addSubview:self.socketAddressTF];
         [self.socketAddressTF addSubview:socketATFUnderLine];
-        socketATFUnderLine.sd_layout.rightSpaceToView(self.socketAddressTF, 0);
+        self.socketAddressTF.sd_layout
+        .topEqualToView(socketLabel)
+        .bottomEqualToView(socketLabel)
+        .leftSpaceToView(self.socketBtn, 0)
+        .rightSpaceToView(self.socketColon, 0);
         
+        socketATFUnderLine.sd_layout
+        .leftEqualToView(self.socketAddressTF)
+        .rightEqualToView(self.socketAddressTF)
+        .bottomSpaceToView(self.socketAddressTF, -2)
+        .heightIs(2);
+
         //第四行config
-        UILabel *configLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, socketLabel.top + 35, 60, 30)];
+        UILabel *configLabel = [[UILabel alloc] init];
         configLabel.textColor = UIColor.grayColor;
         configLabel.text = @"config";
         [self addSubview:configLabel];
-        
+        configLabel.sd_layout
+        .leftEqualToView(socketLabel)
+        .topSpaceToView(self.saveSocketButton, 12)
+        .widthIs(60)
+        .autoHeightRatio(0);
+
         self.configBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.configBtn.frame = CGRectMake(configLabel.right, configLabel.top, 60, 30);
         self.configBtn.tag = 102;
         [self.configBtn setTitle:@"https://" forState:UIControlStateNormal];
         [self.configBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         //        httpBtn.backgroundColor = [UIColor redColor];
         [self.configBtn addTarget:self action:@selector(protocolBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.configBtn];
-        
-        self.saveConfigButton = [[UIButton alloc] initWithFrame:CGRectMake(self.width * 4 / 5, configLabel.top, self.width / 5, 30)];
+        self.configBtn.sd_layout
+        .leftSpaceToView(configLabel, 0)
+        .topSpaceToView(self.saveSocketButton, 5)
+        .widthIs(60)
+        .heightIs(30);
+
+        self.saveConfigButton = [[UIButton alloc] init];
         [self.saveConfigButton addTarget:self action:@selector(saveConfigButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.saveConfigButton.layer.borderWidth = 2;
         [self.saveConfigButton.layer setCornerRadius:5];
@@ -198,45 +312,79 @@
         self.saveConfigButton.titleLabel.font = [UIFont systemFontOfSize: 14];
         [self.saveConfigButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.saveConfigButton];
-        
+        self.saveConfigButton.sd_layout
+        .rightEqualToView(self.saveSocketButton)
+        .topEqualToView(self.configBtn)
+        .leftEqualToView(self.saveSocketButton)
+        .bottomEqualToView(self.configBtn);
+
         self.configPortBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.configPortBtn.tag = 202;
-        self.configPortBtn.frame = CGRectMake(self.saveConfigButton.left - 40, configLabel.top, 40, 30);
         [self.configPortBtn setImage:[UIImage imageNamed:@"down"] forState:UIControlStateNormal];
         [self.configPortBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         //        httpBtn.backgroundColor = [UIColor redColor];
         [self.configPortBtn addTarget:self action:@selector(portBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.configPortBtn];
-        
-        self.configPortTF = [[UITextField alloc] initWithFrame:CGRectMake(self.configPortBtn.left - 45, configLabel.top, 45, 30)];
+        self.configPortBtn.sd_layout
+        .topEqualToView(self.saveConfigButton)
+        .rightSpaceToView(self.saveConfigButton, 0)
+        .bottomEqualToView(self.saveConfigButton)
+        .widthIs(40);
+
+        self.configPortTF = [[UITextField alloc] init];
         self.configPortTF.placeholder = @"8089";
         self.configPortTF.font = [UIFont systemFontOfSize:15];
         self.configPortTF.delegate = self;
-        UIView *configPTFUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.configPortTF.height - 2, self.configPortTF.width, 2)];
+        UIView *configPTFUnderLine = [[UIView alloc] init];
         configPTFUnderLine.backgroundColor = UIColor.grayColor;
         [self addSubview:self.configPortTF];
         [self.configPortTF addSubview:configPTFUnderLine];
-        configPTFUnderLine.sd_layout.rightSpaceToView(self.configPortTF, 0);
+        self.configPortTF.sd_layout
+        .topEqualToView(configLabel)
+        .bottomEqualToView(configLabel)
+        .rightSpaceToView(self.configPortBtn, 0)
+        .widthIs(45);
         
-        self.configColon = [[UILabel alloc] initWithFrame:CGRectMake(self.configPortTF.left - 7, configLabel.top, 5, 30)];
+        configPTFUnderLine.sd_layout
+        .leftEqualToView(self.configPortTF)
+        .rightEqualToView(self.configPortTF)
+        .bottomSpaceToView(self.configPortTF, -2)
+        .heightIs(2);
+
+        self.configColon = [[UILabel alloc] init];
         self.configColon.textColor = UIColor.grayColor;
         self.configColon.text = @":";
         [self addSubview:self.configColon];
-        
-        self.configAddressTF = [[UITextField alloc] initWithFrame:CGRectMake(125, configLabel.top, self.configColon.left - 127, configLabel.height)];
+        self.configColon.sd_layout
+        .topEqualToView(configLabel)
+        .rightSpaceToView(self.configPortTF, 0)
+        .widthIs(5)
+        .autoHeightRatio(0);
+
+        self.configAddressTF = [[UITextField alloc] init];
         self.configAddressTF.placeholder = @"arkpaastest.analysys.cn";
         self.configAddressTF.font = [UIFont systemFontOfSize:15];
         self.configAddressTF.delegate = self;
         self.configAddressTF.clearButtonMode = UITextFieldViewModeAlways;
         self.configAddressTF.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        UIView *configAddressTFUnderLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.configAddressTF.height - 2, self.configAddressTF.width, 2)];
+        UIView *configAddressTFUnderLine = [[UIView alloc] init];
         configAddressTFUnderLine.backgroundColor = UIColor.grayColor;
         [self addSubview:self.configAddressTF];
         [self.configAddressTF addSubview:configAddressTFUnderLine];
-        configAddressTFUnderLine.sd_layout.rightSpaceToView(self.configAddressTF, 0);
+        self.configAddressTF.sd_layout
+        .topEqualToView(configLabel)
+        .bottomEqualToView(configLabel)
+        .leftSpaceToView(self.configBtn, 0)
+        .rightSpaceToView(self.configColon, 0);
         
+        configAddressTFUnderLine.sd_layout
+        .leftEqualToView(self.configAddressTF)
+        .rightEqualToView(self.configAddressTF)
+        .bottomSpaceToView(self.configAddressTF, -2)
+        .heightIs(2);
+
         //保存全部按钮
-        self.saveButton = [[UIButton alloc] initWithFrame:CGRectMake(0, configLabel.bottom + 5, self.width, 60)];
+        self.saveButton = [[UIButton alloc] init];
         [self.saveButton addTarget:self action:@selector(saveButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.saveButton.layer.borderWidth = 2;
         [self.saveButton.layer setCornerRadius:5];
@@ -245,10 +393,14 @@
         [self.saveButton setTitle:@"保存全部" forState:UIControlStateNormal];
         [self.saveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.saveButton];
-        self.saveButton.sd_layout.rightSpaceToView(self, 0);
-        
+        self.saveButton.sd_layout
+        .rightEqualToView(self.saveAppKeyButton)
+        .topSpaceToView(self.saveConfigButton, 5)
+        .leftEqualToView(uploadLabel)
+        .heightIs(60);
+
         //发送数据按钮
-        self.sendDataButton = [[UIButton alloc] initWithFrame:CGRectMake(0, self.saveButton.top + 65, self.width, 60)];
+        self.sendDataButton = [[UIButton alloc] init];
         [self.sendDataButton addTarget:self action:@selector(sendDataAction:) forControlEvents:UIControlEventTouchUpInside];
         self.sendDataButton.layer.borderWidth = 2;
         [self.sendDataButton.layer setCornerRadius:5];
@@ -257,62 +409,102 @@
         [self.sendDataButton setTitle:@"发送数据" forState:UIControlStateNormal];
         [self.sendDataButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self addSubview:self.sendDataButton];
-        self.sendDataButton.sd_layout.rightSpaceToView(self, 0);
-        
+        self.sendDataButton.sd_layout
+        .rightEqualToView(self.saveAppKeyButton)
+        .topSpaceToView(self.saveButton, 5)
+        .leftEqualToView(uploadLabel)
+        .heightIs(60);
+
         //显示地址
-        UILabel *uploadAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.sendDataButton.bottom, 85, 40)];
+        UILabel *uploadAddressLabel = [[UILabel alloc] init];
         uploadAddressLabel.text = @"upload地址:";
 //        self.uploadAddressLabel.backgroundColor = [UIColor redColor];
         uploadAddressLabel.font = [UIFont systemFontOfSize:15];
         uploadAddressLabel.textColor = UIColor.blueColor;
         [self addSubview:uploadAddressLabel];
-        
-        self.showUpAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(uploadAddressLabel.right, uploadAddressLabel.top, self.width - uploadAddressLabel.size.width, 40)];
+        uploadAddressLabel.sd_layout
+        .leftEqualToView(uploadLabel)
+        .topSpaceToView(self.sendDataButton, 12)
+        .widthIs(85)
+        .autoHeightRatio(0);
+
+        self.showUpAddressTV = [[UITextView alloc] init];
 //        self.uploadAddressText.backgroundColor = [UIColor greenColor];
         self.showUpAddressTV.font = [UIFont systemFontOfSize:15];
         self.showUpAddressTV.textColor = UIColor.blueColor;
         self.showUpAddressTV.editable = NO;
         [self addSubview:self.showUpAddressTV];
-        self.showUpAddressTV.sd_layout.rightSpaceToView(self, 0);
-        
-        UILabel *socketAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uploadAddressLabel.bottom, 85, 40)];
+        self.showUpAddressTV.sd_layout
+        .leftSpaceToView(uploadAddressLabel, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(self.sendDataButton, 5)
+        .heightIs(40);
+
+        UILabel *socketAddressLabel = [[UILabel alloc] init];
         socketAddressLabel.text = @"socket地址:";
         socketAddressLabel.font = [UIFont systemFontOfSize:15];
         socketAddressLabel.textColor = UIColor.blueColor;
         [self addSubview:socketAddressLabel];
-        
-        self.showSocketAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(socketAddressLabel.right, socketAddressLabel.top, frame.size.width - socketAddressLabel.size.width, 40)];
+        socketAddressLabel.sd_layout
+        .leftEqualToView(uploadLabel)
+        .topSpaceToView(self.showUpAddressTV, 12)
+        .widthIs(85)
+        .autoHeightRatio(0);
+
+        self.showSocketAddressTV = [[UITextView alloc] init];
         self.showSocketAddressTV.font = [UIFont systemFontOfSize:15];
         self.showSocketAddressTV.textColor = UIColor.blueColor;
         self.showSocketAddressTV.editable = NO;
         [self addSubview:self.showSocketAddressTV];
-        self.showSocketAddressTV.sd_layout.rightSpaceToView(self, 0);
-        
-        UILabel *configAddressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, socketAddressLabel.bottom, 85, 40)];
+        self.showSocketAddressTV.sd_layout
+        .leftSpaceToView(socketAddressLabel, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(self.showUpAddressTV, 5)
+        .heightIs(40);
+
+        UILabel *configAddressLabel = [[UILabel alloc] init];
         configAddressLabel.text = @"config地址:";
         configAddressLabel.font = [UIFont systemFontOfSize:15];
         configAddressLabel.textColor = UIColor.blueColor;
         [self addSubview:configAddressLabel];
-        
-        self.showConfigAddressTV = [[UITextView alloc] initWithFrame:CGRectMake(configAddressLabel.right, configAddressLabel.top, self.width - configAddressLabel.size.width, 40)];
+        configAddressLabel.sd_layout
+        .leftEqualToView(uploadLabel)
+        .topSpaceToView(self.showSocketAddressTV, 12)
+        .widthIs(85)
+        .autoHeightRatio(0);
+
+        self.showConfigAddressTV = [[UITextView alloc] init];
         self.showConfigAddressTV.font = [UIFont systemFontOfSize:15];
         self.showConfigAddressTV.textColor = UIColor.blueColor;
         self.showConfigAddressTV.editable = NO;
         [self addSubview:self.showConfigAddressTV];
-        self.showConfigAddressTV.sd_layout.rightSpaceToView(self, 0);
-        
-        UILabel *sendStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, configAddressLabel.bottom, self.width, 30)];
+        self.showConfigAddressTV.sd_layout
+        .leftSpaceToView(configAddressLabel, 0)
+        .rightSpaceToView(self, 0)
+        .topSpaceToView(self.showSocketAddressTV, 5)
+        .heightIs(40);
+
+        UILabel *sendStatusLabel = [[UILabel alloc] init];
         sendStatusLabel.textColor = [UIColor purpleColor];
         sendStatusLabel.text = @"数据发送结果:";
         [self addSubview:sendStatusLabel];
-        
+        sendStatusLabel.sd_layout
+        .leftEqualToView(uploadLabel)
+        .topSpaceToView(self.showConfigAddressTV, 12)
+        .rightEqualToView(self.saveAppKeyButton)
+        .autoHeightRatio(0);
+
         //显示通知
-        self.dataText = [[UITextView alloc] initWithFrame:CGRectMake(0, sendStatusLabel.bottom, self.width, self.height)];
+        self.dataText = [[UITextView alloc] init];
         self.dataText.font = [UIFont systemFontOfSize:15];
         self.dataText.textColor = UIColor.grayColor;
         self.dataText.editable = NO;
         [self addSubview:self.dataText];
-        self.dataText.sd_layout.rightSpaceToView(self, 0);
+        self.dataText.sd_layout
+        .leftEqualToView(uploadLabel)
+        .rightEqualToView(self.saveAppKeyButton)
+        .topSpaceToView(sendStatusLabel, 0)
+        .heightIs(300);
     }
 
     return self;

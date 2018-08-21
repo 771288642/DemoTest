@@ -41,8 +41,6 @@
     //注册键盘出现与隐藏通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    //注册横竖屏通知
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changeRotate:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
     
 //    self.view.backgroundColor = [UIColor greenColor];
     
@@ -52,18 +50,48 @@
     CGFloat margin = 5;
     
     //  初始化底层视图
-    if (isPhoneX) {
-        self.deployView = [[DemoView alloc] initWithFrame:CGRectMake(margin + 44, topViewHeight + margin, self.view.width - margin*4 - 44, self.view.height - topViewHeight - margin*2 - 34)];
-    } else {
-        self.deployView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
-    }
-    
+    self.deployView = [[DemoView alloc] init];
     self.deployView.delegate = self;
-    self.deployView.contentSize = CGSizeMake(self.view.width - margin*2, self.deployView.height + 350);
-//    self.demoView.backgroundColor = [UIColor redColor];
+    self.deployView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.deployView];
     [self loadLocalDataupdateUI];
     
+    if (isPhoneX) {
+        //注册横竖屏通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeRotate:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+        if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait
+            || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown) {
+            //竖屏
+            self.deployView.sd_layout
+            .leftSpaceToView(self.view, margin)
+            .topSpaceToView(self.view, topViewHeight + margin + 44)
+            .rightSpaceToView(self.view, margin)
+            .bottomSpaceToView(self.view, margin + 34);
+        } else if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) {
+            //左横屏
+            self.deployView.sd_layout
+            .leftSpaceToView(self.view, margin + 44)
+            .topSpaceToView(self.view, topViewHeight + margin)
+            .rightSpaceToView(self.view, margin)
+            .bottomSpaceToView(self.view, margin + 34);
+        } else {
+            //右横屏
+            self.deployView.sd_layout
+            .leftSpaceToView(self.view, margin)
+            .topSpaceToView(self.view, topViewHeight + margin)
+            .rightSpaceToView(self.view, margin + 44)
+            .bottomSpaceToView(self.view, margin + 34);
+        }
+    } else {
+        self.deployView.sd_layout
+        .leftSpaceToView(self.view, margin)
+        .topSpaceToView(self.view, topViewHeight + margin)
+        .rightSpaceToView(self.view, margin)
+        .bottomSpaceToView(self.view, margin);
+    }
+    
+    [self.deployView setupAutoContentSizeWithBottomView:self.view bottomMargin:350];
+    [self.deployView setupAutoContentSizeWithRightView:self.view rightMargin:-84];
 }
 
 
@@ -82,6 +110,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 }
 
 #pragma mark *** UI ***
@@ -416,108 +445,33 @@
 #pragma mark - 接收横竖屏通知
 
 - (void)changeRotate:(NSNotification*)noti {
+    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    CGFloat topViewHeight = navigationBar.height + statusBarFrame.size.height;
+    CGFloat margin = 5;
     if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait
         || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown) {
         //竖屏
-        [self autoLayout];
-        self.deployView.contentSize = CGSizeMake(self.view.width - 10, self.deployView.height + 350);
-        
+        self.deployView.sd_layout
+        .leftSpaceToView(self.view, margin)
+        .topSpaceToView(self.view, topViewHeight + margin + 44)
+        .rightSpaceToView(self.view, margin)
+        .bottomSpaceToView(self.view, margin + 34);
+    } else if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) {
+        //左横屏
+        self.deployView.sd_layout
+        .leftSpaceToView(self.view, margin + 44)
+        .topSpaceToView(self.view, topViewHeight + margin)
+        .rightSpaceToView(self.view, margin)
+        .bottomSpaceToView(self.view, margin + 34);
     } else {
-        //横屏
-        [self autoLayout];
+        //右横屏
+        self.deployView.sd_layout
+        .leftSpaceToView(self.view, margin)
+        .topSpaceToView(self.view, topViewHeight + margin)
+        .rightSpaceToView(self.view, margin + 44)
+        .bottomSpaceToView(self.view, margin + 34);
     }
-}
-
-- (void)autoLayout {
-    self.deployView.sd_layout
-    .leftSpaceToView(self.view, 5)
-    .rightSpaceToView(self.view, 5)
-    .topSpaceToView(self.view, 50)
-    .bottomSpaceToView(self.view, 5);
-    
-    //app key
-    self.deployView.saveAppKeyButton.sd_layout
-    .rightSpaceToView(self.deployView, 0)
-    .topSpaceToView(self.deployView, 0)
-    .widthIs((self.view.width - 10)/4);
-    
-    self.deployView.appKeyText.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveAppKeyButton.width + 5);
-    
-    //upload
-    self.deployView.saveUploadButton.sd_layout
-    .rightSpaceToView(self.deployView, 0)
-    .topSpaceToView(self.deployView, self.deployView.saveAppKeyButton.bottom + 5)
-    .widthIs((self.view.width - 10)/5);
-    
-    self.deployView.portBtn.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width)
-    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top)
-    .widthIs(40);
-    
-    self.deployView.uploadPortTF.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width + 40)
-    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top)
-    .widthIs(45);
-    
-    self.deployView.uploadColon.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width + 85)
-    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top)
-    .widthIs(5);
-    
-    self.deployView.uploadAddressTF.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width + 90)
-    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top);
-    
-    //socket
-    self.deployView.saveSocketButton.sd_layout
-    .rightSpaceToView(self.deployView, 0)
-    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.bottom + 5)
-    .widthIs((self.view.width - 10)/5);
-
-    self.deployView.socketPortBtn.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width)
-    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top)
-    .widthIs(40);
-
-    self.deployView.socketPortTF.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width + 40)
-    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top)
-    .widthIs(45);
-
-    self.deployView.socketColon.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width + 85)
-    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top)
-    .widthIs(5);
-
-    self.deployView.socketAddressTF.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width + 90)
-    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top);
-    
-    //config
-    self.deployView.saveConfigButton.sd_layout
-    .rightSpaceToView(self.deployView, 0)
-    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.bottom + 5)
-    .widthIs((self.view.width - 10)/5);
-    
-    self.deployView.configPortBtn.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width)
-    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top)
-    .widthIs(40);
-    
-    self.deployView.configPortTF.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width + 40)
-    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top)
-    .widthIs(45);
-    
-    self.deployView.configColon.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width + 85)
-    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top)
-    .widthIs(5);
-    
-    self.deployView.configAddressTF.sd_layout
-    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width + 90)
-    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top);
 }
 
 @end
