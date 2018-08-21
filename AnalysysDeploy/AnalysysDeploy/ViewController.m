@@ -19,7 +19,7 @@
 @interface ViewController ()<DemoViewProtocol>
 
 //  承载视图
-@property (nonatomic, strong) DemoView *demoView;
+@property (nonatomic, strong) DemoView *deployView;
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, assign) BOOL keyboardIsShown;
 
@@ -53,15 +53,15 @@
     
     //  初始化底层视图
     if (isPhoneX) {
-        self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin + 44, topViewHeight + margin, self.view.width - margin*4 - 44, self.view.height - topViewHeight - margin*2 - 34)];
+        self.deployView = [[DemoView alloc] initWithFrame:CGRectMake(margin + 44, topViewHeight + margin, self.view.width - margin*4 - 44, self.view.height - topViewHeight - margin*2 - 34)];
     } else {
-        self.demoView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
+        self.deployView = [[DemoView alloc] initWithFrame:CGRectMake(margin, topViewHeight + margin, self.view.width - margin*2, self.view.height - topViewHeight - margin*2)];
     }
     
-    self.demoView.delegate = self;
-    self.demoView.contentSize = CGSizeMake(self.view.width - margin*2, self.demoView.height + 350);
+    self.deployView.delegate = self;
+    self.deployView.contentSize = CGSizeMake(self.view.width - margin*2, self.deployView.height + 350);
 //    self.demoView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:self.demoView];
+    [self.view addSubview:self.deployView];
     [self loadLocalDataupdateUI];
     
 }
@@ -94,29 +94,29 @@
     [self filing];
     NSData *data = [[NSData alloc] initWithContentsOfFile:self.path];
     if (data.bytes > 0) {
-        [self.demoView.uploadBtn setTitle:self.demoView.uploadBtn.titleLabel.text ?: @"http://" forState:UIControlStateNormal];
-        [self.demoView.socketBtn setTitle:self.demoView.socketBtn.titleLabel.text ?: @"ws://" forState:UIControlStateNormal];
-        [self.demoView.configBtn setTitle:self.demoView.configBtn.titleLabel.text ?: @"http://" forState:UIControlStateNormal];
+        [self.deployView.uploadBtn setTitle:self.deployView.uploadBtn.titleLabel.text ?: @"http://" forState:UIControlStateNormal];
+        [self.deployView.socketBtn setTitle:self.deployView.socketBtn.titleLabel.text ?: @"ws://" forState:UIControlStateNormal];
+        [self.deployView.configBtn setTitle:self.deployView.configBtn.titleLabel.text ?: @"http://" forState:UIControlStateNormal];
         
         //  修改SDK地址信息
-        [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
-        [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
-        [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
+        [AnalysysAgent setUploadURL:self.deployView.showUpAddressTV.text];
+        [AnalysysAgent setVisitorDebugURL:self.deployView.showSocketAddressTV.text];
+        [AnalysysAgent setVisitorConfigURL:self.deployView.showConfigAddressTV.text];
     } else {
         //  使用默认配置信息
-        self.demoView.appKeyText.text = @"paastest";
+        self.deployView.appKeyText.text = @"paastest";
 
-        [self.demoView.uploadBtn setTitle:@"https://" forState:UIControlStateNormal] ;
-        self.demoView.uploadAddressTF.text = @"arkpaastest.analysys.cn";
-        self.demoView.uploadPortTF.text = @"4089";
+        [self.deployView.uploadBtn setTitle:@"https://" forState:UIControlStateNormal] ;
+        self.deployView.uploadAddressTF.text = @"arkpaastest.analysys.cn";
+        self.deployView.uploadPortTF.text = @"4089";
 
-        [self.demoView.socketBtn setTitle:@"wss://" forState:UIControlStateNormal];
-        self.demoView.socketAddressTF.text = @"arkpaastest.analysys.cn";
-        self.demoView.socketPortTF.text = @"4091";
+        [self.deployView.socketBtn setTitle:@"wss://" forState:UIControlStateNormal];
+        self.deployView.socketAddressTF.text = @"arkpaastest.analysys.cn";
+        self.deployView.socketPortTF.text = @"4091";
 
-        [self.demoView.configBtn setTitle:@"https://" forState:UIControlStateNormal];
-        self.demoView.configAddressTF.text = @"arkpaastest.analysys.cn";
-        self.demoView.configPortTF.text = @"4089";
+        [self.deployView.configBtn setTitle:@"https://" forState:UIControlStateNormal];
+        self.deployView.configAddressTF.text = @"arkpaastest.analysys.cn";
+        self.deployView.configPortTF.text = @"4089";
         [self file];
     }
     [self updateShowView];
@@ -129,15 +129,15 @@
 - (void)saveAppKeyButtonAction {
     [self.view endEditing:YES];
     
-    if (self.demoView.appKeyText.text.length == 0) {
+    if (self.deployView.appKeyText.text.length == 0) {
         [self showAlert:@"app key设置异常"];
         return;
     }
     
     Model *model = [[Model alloc] init];
-    model.appKey = self.demoView.appKeyText.text;
+    model.appKey = self.deployView.appKeyText.text;
     [self filing];
-    self.demoView.appKeyText.text = model.appKey;
+    self.deployView.appKeyText.text = model.appKey;
     [self file];
     
     [self showAlert:@"成功保存App Key ！"];
@@ -147,24 +147,24 @@
 - (void)saveUploadButtonAction {
     [self.view endEditing:YES];
     
-    if (self.demoView.uploadAddressTF.text.length == 0 ||
-        self.demoView.uploadPortTF.text.length == 0) {
+    if (self.deployView.uploadAddressTF.text.length == 0 ||
+        self.deployView.uploadPortTF.text.length == 0) {
         [self showAlert:@"upload设置异常"];
         return;
     }
     
     Model *model = [[Model alloc] init];
-    model.uploadProtocol = self.demoView.uploadBtn.titleLabel.text;
-    model.uploadAddress = self.demoView.uploadAddressTF.text;
-    model.uploadPort = self.demoView.uploadPortTF.text;
+    model.uploadProtocol = self.deployView.uploadBtn.titleLabel.text;
+    model.uploadAddress = self.deployView.uploadAddressTF.text;
+    model.uploadPort = self.deployView.uploadPortTF.text;
     [self filing];
-    [self.demoView.uploadBtn setTitle:model.uploadProtocol forState:UIControlStateNormal];
-    self.demoView.uploadAddressTF.text = model.uploadAddress;
-    self.demoView.uploadPortTF.text = model.uploadPort;
+    [self.deployView.uploadBtn setTitle:model.uploadProtocol forState:UIControlStateNormal];
+    self.deployView.uploadAddressTF.text = model.uploadAddress;
+    self.deployView.uploadPortTF.text = model.uploadPort;
     [self file];
     [self updateShowView];
     
-    [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
+    [AnalysysAgent setUploadURL:self.deployView.showUpAddressTV.text];
     [self showAlert:@"成功保存upload ！"];
     
 }
@@ -173,24 +173,24 @@
 - (void)saveSocketButtonAction {
     [self.view endEditing:YES];
     
-    if (self.demoView.socketAddressTF.text.length == 0 ||
-        self.demoView.socketPortTF.text.length == 0) {
+    if (self.deployView.socketAddressTF.text.length == 0 ||
+        self.deployView.socketPortTF.text.length == 0) {
         [self showAlert:@"socket设置异常"];
         return;
     }
     
     Model *model = [[Model alloc] init];
-    model.socketProtocol = self.demoView.socketBtn.titleLabel.text;
-    model.socketAddress = self.demoView.socketAddressTF.text;
-    model.socketPort = self.demoView.socketPortTF.text;
+    model.socketProtocol = self.deployView.socketBtn.titleLabel.text;
+    model.socketAddress = self.deployView.socketAddressTF.text;
+    model.socketPort = self.deployView.socketPortTF.text;
     [self filing];
-    [self.demoView.socketBtn setTitle:model.socketProtocol forState:UIControlStateNormal];
-    self.demoView.socketAddressTF.text = model.socketAddress;
-    self.demoView.socketPortTF.text = model.socketPort;
+    [self.deployView.socketBtn setTitle:model.socketProtocol forState:UIControlStateNormal];
+    self.deployView.socketAddressTF.text = model.socketAddress;
+    self.deployView.socketPortTF.text = model.socketPort;
     [self file];
     [self updateShowView];
     
-    [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
+    [AnalysysAgent setVisitorDebugURL:self.deployView.showSocketAddressTV.text];
     [self showAlert:@"成功保存socket ！"];
 }
 
@@ -198,24 +198,24 @@
 - (void)saveConfigButtonAction {
     [self.view endEditing:YES];
     
-    if (self.demoView.configAddressTF.text.length == 0 ||
-        self.demoView.configPortTF.text.length == 0) {
+    if (self.deployView.configAddressTF.text.length == 0 ||
+        self.deployView.configPortTF.text.length == 0) {
         [self showAlert:@"config设置异常"];
         return;
     }
     
     Model *model = [[Model alloc] init];
-    model.configProtocol = self.demoView.configBtn.titleLabel.text;
-    model.configAddress = self.demoView.configAddressTF.text;
-    model.configPort = self.demoView.configPortTF.text;
+    model.configProtocol = self.deployView.configBtn.titleLabel.text;
+    model.configAddress = self.deployView.configAddressTF.text;
+    model.configPort = self.deployView.configPortTF.text;
     [self filing];
-    [self.demoView.configBtn setTitle:model.configProtocol forState:UIControlStateNormal];
-    self.demoView.configAddressTF.text = model.configAddress;
-    self.demoView.configPortTF.text = model.configPort;
+    [self.deployView.configBtn setTitle:model.configProtocol forState:UIControlStateNormal];
+    self.deployView.configAddressTF.text = model.configAddress;
+    self.deployView.configPortTF.text = model.configPort;
     [self file];
     [self updateShowView];
     
-    [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
+    [AnalysysAgent setVisitorConfigURL:self.deployView.showConfigAddressTV.text];
     [self showAlert:@"成功保存config ！"];
     
 }
@@ -224,22 +224,22 @@
 - (void)saveButtonAction {
 
     //  检查数据合法性
-    if (self.demoView.appKeyText.text.length == 0) {
+    if (self.deployView.appKeyText.text.length == 0) {
         [self showAlert:@"app key设置异常"];
         return;
     }
-    if (self.demoView.uploadAddressTF.text.length == 0 ||
-        self.demoView.uploadPortTF.text.length == 0) {
+    if (self.deployView.uploadAddressTF.text.length == 0 ||
+        self.deployView.uploadPortTF.text.length == 0) {
         [self showAlert:@"upload设置异常"];
         return;
     }
-    if (self.demoView.socketAddressTF.text.length == 0 ||
-        self.demoView.socketPortTF.text.length == 0) {
+    if (self.deployView.socketAddressTF.text.length == 0 ||
+        self.deployView.socketPortTF.text.length == 0) {
         [self showAlert:@"socket设置异常"];
         return;
     }
-    if (self.demoView.configAddressTF.text.length == 0 ||
-        self.demoView.configPortTF.text.length == 0) {
+    if (self.deployView.configAddressTF.text.length == 0 ||
+        self.deployView.configPortTF.text.length == 0) {
         [self showAlert:@"config设置异常"];
         return;
     }
@@ -247,9 +247,9 @@
     [self file];
     [self updateShowView];
     //  修改SDK地址信息
-    [AnalysysAgent setUploadURL:self.demoView.showUpAddressTV.text];
-    [AnalysysAgent setVisitorDebugURL:self.demoView.showSocketAddressTV.text];
-    [AnalysysAgent setVisitorConfigURL:self.demoView.showConfigAddressTV.text];
+    [AnalysysAgent setUploadURL:self.deployView.showUpAddressTV.text];
+    [AnalysysAgent setVisitorDebugURL:self.deployView.showSocketAddressTV.text];
+    [AnalysysAgent setVisitorConfigURL:self.deployView.showConfigAddressTV.text];
     
     [self showAlert:@"全部保存成功！"];
     [self.view endEditing:YES];
@@ -258,19 +258,19 @@
 /** 刷新页面展示地址视图 */
 - (void)updateShowView {
     //  赋值 展示控件
-    self.demoView.showUpAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.uploadBtn.titleLabel.text ?: @"",self.demoView.uploadAddressTF.text,self.demoView.uploadPortTF.text];
+    self.deployView.showUpAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.deployView.uploadBtn.titleLabel.text ?: @"",self.deployView.uploadAddressTF.text,self.deployView.uploadPortTF.text];
     
-    self.demoView.showSocketAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.socketBtn.titleLabel.text ?: @"",self.demoView.socketAddressTF.text,self.demoView.socketPortTF.text];
+    self.deployView.showSocketAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.deployView.socketBtn.titleLabel.text ?: @"",self.deployView.socketAddressTF.text,self.deployView.socketPortTF.text];
     
-    self.demoView.showConfigAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.demoView.configBtn.titleLabel.text ?: @"",self.demoView.configAddressTF.text,self.demoView.configPortTF.text];
-    self.demoView.dataText.text = @"";
+    self.deployView.showConfigAddressTV.text = [NSString stringWithFormat:@"%@%@:%@",self.deployView.configBtn.titleLabel.text ?: @"",self.deployView.configAddressTF.text,self.deployView.configPortTF.text];
+    self.deployView.dataText.text = @"";
 }
 
 /**  发送数据 */
 - (void)sendDataButtonAction {
     [self.view endEditing:YES];
     
-    self.demoView.dataText.text = @"";
+    self.deployView.dataText.text = @"";
     
     NSString *trackEvent = [NSString stringWithFormat:@"track_%ld", arc4random() % 100];
     [AnalysysAgent track:trackEvent properties:@{@"name":@"部署人员", @"city":@"北京"}];
@@ -322,7 +322,7 @@
 - (void)receiveSDKNotification:(NSNotification *)notification {
     NSLog(@"收到数据接收通知:%@   :%@", notification.name, notification.object);
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.demoView.dataText.text = [NSString stringWithFormat:@"%@",notification.object];
+        self.deployView.dataText.text = [NSString stringWithFormat:@"%@",notification.object];
     });
 }
 
@@ -336,19 +336,19 @@
 
 - (void)file {
     Model *model = [[Model alloc] init];
-    model.appKey = self.demoView.appKeyText.text;
+    model.appKey = self.deployView.appKeyText.text;
     
-    model.uploadProtocol = self.demoView.uploadBtn.titleLabel.text;
-    model.uploadAddress = self.demoView.uploadAddressTF.text;
-    model.uploadPort = self.demoView.uploadPortTF.text;
+    model.uploadProtocol = self.deployView.uploadBtn.titleLabel.text;
+    model.uploadAddress = self.deployView.uploadAddressTF.text;
+    model.uploadPort = self.deployView.uploadPortTF.text;
     
-    model.socketProtocol = self.demoView.socketBtn.titleLabel.text;
-    model.socketAddress = self.demoView.socketAddressTF.text;
-    model.socketPort = self.demoView.socketPortTF.text;
+    model.socketProtocol = self.deployView.socketBtn.titleLabel.text;
+    model.socketAddress = self.deployView.socketAddressTF.text;
+    model.socketPort = self.deployView.socketPortTF.text;
     
-    model.configProtocol = self.demoView.configBtn.titleLabel.text;
-    model.configAddress = self.demoView.configAddressTF.text;
-    model.configPort = self.demoView.configPortTF.text;
+    model.configProtocol = self.deployView.configBtn.titleLabel.text;
+    model.configAddress = self.deployView.configAddressTF.text;
+    model.configPort = self.deployView.configPortTF.text;
     
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
@@ -364,19 +364,19 @@
     NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
     Model *model = [unarchiver decodeObjectForKey:@"model"];
     [unarchiver finishDecoding];
-    self.demoView.appKeyText.text = model.appKey;
+    self.deployView.appKeyText.text = model.appKey;
     
-    [self.demoView.uploadBtn setTitle:model.uploadProtocol forState:UIControlStateNormal];
-    self.demoView.uploadAddressTF.text = model.uploadAddress;
-    self.demoView.uploadPortTF.text = model.uploadPort;
+    [self.deployView.uploadBtn setTitle:model.uploadProtocol forState:UIControlStateNormal];
+    self.deployView.uploadAddressTF.text = model.uploadAddress;
+    self.deployView.uploadPortTF.text = model.uploadPort;
     
-    [self.demoView.socketBtn setTitle:model.socketProtocol forState:UIControlStateNormal];
-    self.demoView.socketAddressTF.text = model.socketAddress;
-    self.demoView.socketPortTF.text = model.socketPort;
+    [self.deployView.socketBtn setTitle:model.socketProtocol forState:UIControlStateNormal];
+    self.deployView.socketAddressTF.text = model.socketAddress;
+    self.deployView.socketPortTF.text = model.socketPort;
     
-    [self.demoView.configBtn setTitle:model.configProtocol forState:UIControlStateNormal];
-    self.demoView.configAddressTF.text = model.configAddress;
-    self.demoView.configPortTF.text = model.configPort;
+    [self.deployView.configBtn setTitle:model.configProtocol forState:UIControlStateNormal];
+    self.deployView.configAddressTF.text = model.configAddress;
+    self.deployView.configPortTF.text = model.configPort;
 }
 
 #pragma mark - 接收键盘通知
@@ -390,11 +390,11 @@
     NSValue *aValue = [info objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
     CGSize keyboardSize = [aValue CGRectValue].size;
     
-    CGRect viewFrame = self.demoView.frame;
+    CGRect viewFrame = self.deployView.frame;
     viewFrame.size.height -= keyboardSize.height;
-    self.demoView.frame = viewFrame;
-    CGRect textFieldRect = [self.demoView.currentText frame];
-    [self.demoView scrollRectToVisible:textFieldRect animated:YES];
+    self.deployView.frame = viewFrame;
+    CGRect textFieldRect = [self.deployView.currentText frame];
+    [self.deployView scrollRectToVisible:textFieldRect animated:YES];
     self.keyboardIsShown = YES;
 }
 
@@ -404,9 +404,9 @@
     NSValue *aValue = [info objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
     CGSize keyboardSize = [aValue CGRectValue].size;
 
-    CGRect viewFrame = self.demoView.frame;
+    CGRect viewFrame = self.deployView.frame;
     viewFrame.size.height += keyboardSize.height;
-    self.demoView.frame = viewFrame;
+    self.deployView.frame = viewFrame;
     if (!self.keyboardIsShown) {
         return;
     }
@@ -420,7 +420,7 @@
         || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown) {
         //竖屏
         [self autoLayout];
-        self.demoView.contentSize = CGSizeMake(self.view.width - 10, self.demoView.height + 350);
+        self.deployView.contentSize = CGSizeMake(self.view.width - 10, self.deployView.height + 350);
         
     } else {
         //横屏
@@ -429,95 +429,95 @@
 }
 
 - (void)autoLayout {
-    self.demoView.sd_layout
+    self.deployView.sd_layout
     .leftSpaceToView(self.view, 5)
     .rightSpaceToView(self.view, 5)
     .topSpaceToView(self.view, 50)
     .bottomSpaceToView(self.view, 5);
     
     //app key
-    self.demoView.saveAppKeyButton.sd_layout
-    .rightSpaceToView(self.demoView, 0)
-    .topSpaceToView(self.demoView, 0)
+    self.deployView.saveAppKeyButton.sd_layout
+    .rightSpaceToView(self.deployView, 0)
+    .topSpaceToView(self.deployView, 0)
     .widthIs((self.view.width - 10)/4);
     
-    self.demoView.appKeyText.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveAppKeyButton.width + 5);
+    self.deployView.appKeyText.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveAppKeyButton.width + 5);
     
     //upload
-    self.demoView.saveUploadButton.sd_layout
-    .rightSpaceToView(self.demoView, 0)
-    .topSpaceToView(self.demoView, self.demoView.saveAppKeyButton.bottom + 5)
+    self.deployView.saveUploadButton.sd_layout
+    .rightSpaceToView(self.deployView, 0)
+    .topSpaceToView(self.deployView, self.deployView.saveAppKeyButton.bottom + 5)
     .widthIs((self.view.width - 10)/5);
     
-    self.demoView.portBtn.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width)
-    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top)
+    self.deployView.portBtn.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width)
+    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top)
     .widthIs(40);
     
-    self.demoView.uploadPortTF.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width + 40)
-    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top)
+    self.deployView.uploadPortTF.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width + 40)
+    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top)
     .widthIs(45);
     
-    self.demoView.uploadColon.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width + 85)
-    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top)
+    self.deployView.uploadColon.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width + 85)
+    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top)
     .widthIs(5);
     
-    self.demoView.uploadAddressTF.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveUploadButton.width + 90)
-    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.top);
+    self.deployView.uploadAddressTF.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveUploadButton.width + 90)
+    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.top);
     
     //socket
-    self.demoView.saveSocketButton.sd_layout
-    .rightSpaceToView(self.demoView, 0)
-    .topSpaceToView(self.demoView, self.demoView.saveUploadButton.bottom + 5)
+    self.deployView.saveSocketButton.sd_layout
+    .rightSpaceToView(self.deployView, 0)
+    .topSpaceToView(self.deployView, self.deployView.saveUploadButton.bottom + 5)
     .widthIs((self.view.width - 10)/5);
 
-    self.demoView.socketPortBtn.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width)
-    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top)
+    self.deployView.socketPortBtn.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width)
+    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top)
     .widthIs(40);
 
-    self.demoView.socketPortTF.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width + 40)
-    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top)
+    self.deployView.socketPortTF.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width + 40)
+    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top)
     .widthIs(45);
 
-    self.demoView.socketColon.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width + 85)
-    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top)
+    self.deployView.socketColon.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width + 85)
+    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top)
     .widthIs(5);
 
-    self.demoView.socketAddressTF.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveSocketButton.width + 90)
-    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.top);
+    self.deployView.socketAddressTF.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveSocketButton.width + 90)
+    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.top);
     
     //config
-    self.demoView.saveConfigButton.sd_layout
-    .rightSpaceToView(self.demoView, 0)
-    .topSpaceToView(self.demoView, self.demoView.saveSocketButton.bottom + 5)
+    self.deployView.saveConfigButton.sd_layout
+    .rightSpaceToView(self.deployView, 0)
+    .topSpaceToView(self.deployView, self.deployView.saveSocketButton.bottom + 5)
     .widthIs((self.view.width - 10)/5);
     
-    self.demoView.configPortBtn.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width)
-    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top)
+    self.deployView.configPortBtn.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width)
+    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top)
     .widthIs(40);
     
-    self.demoView.configPortTF.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width + 40)
-    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top)
+    self.deployView.configPortTF.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width + 40)
+    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top)
     .widthIs(45);
     
-    self.demoView.configColon.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width + 85)
-    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top)
+    self.deployView.configColon.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width + 85)
+    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top)
     .widthIs(5);
     
-    self.demoView.configAddressTF.sd_layout
-    .rightSpaceToView(self.demoView, self.demoView.saveConfigButton.width + 90)
-    .topSpaceToView(self.demoView, self.demoView.saveConfigButton.top);
+    self.deployView.configAddressTF.sd_layout
+    .rightSpaceToView(self.deployView, self.deployView.saveConfigButton.width + 90)
+    .topSpaceToView(self.deployView, self.deployView.saveConfigButton.top);
 }
 
 @end
